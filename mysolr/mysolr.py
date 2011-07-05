@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 """
+__author__ = "Rubén Abad"
+__email__ = "ruabag@gmail.com"
+
 from urllib2 import urlopen, Request
 from mysolr_query import SolrQuery
 from mysolr_response import SolrResponse
