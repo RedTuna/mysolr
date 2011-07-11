@@ -4,6 +4,7 @@
 """
 
 from urllib2 import urlopen, Request
+import json
 from mysolr_query import SolrQuery
 from mysolr_response import SolrResponse
 
@@ -25,11 +26,16 @@ class Solr:
         conn.close()
         return SolrResponse(response)
     
-    def update(self, array_of_hash):
+    def update(self, array_of_hash, type='xml'):
         """Sends an update/add message to add the array of hashes(documents) to
         Solr.
         """
-        self._post_xml(self._get_add_xml(array_of_hash))
+        if type == 'xml':
+            self._post_xml(self._get_add_xml(array_of_hash))
+        elif type == 'json':
+            self._post_json(json.dumps(array_of_hash))
+        else:
+            raise 'The given type isn\'t correct. Valid types are "json" and "xml".'
     
     def delete_by_key(self, identifier):
         """Sends an ID delete message to Solr.
@@ -105,6 +111,16 @@ class Solr:
         url = '%s/update' % (self.base_url)
         request = Request(url, xml.encode('utf-8'))
         request.add_header('Content-Type','text/xml')
+        poster = urlopen(request)
+        poster.read()
+        poster.close()
+    
+    def _post_json(self, json):
+        """Sends the json to Solr server.
+        """
+        url = '%s/update' % (self.base_url)
+        request = Request(url, xml.encode('utf-8'))
+        request.add_header('Content-Type','application/json')
         poster = urlopen(request)
         poster.read()
         poster.close()
