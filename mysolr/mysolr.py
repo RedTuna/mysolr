@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 """
-__author__ = "Rubén Abad"
-__email__ = "ruabag@gmail.com"
 
 from urllib2 import urlopen, Request
 from mysolr_query import SolrQuery
@@ -59,6 +57,7 @@ class Solr:
             for key, value in doc_hash.items():
                 doc = '%s<field name="%s">%s</field>' % (doc, key, value)
             doc = '%s</doc>' % (doc)
+            xml = '%s%s' % (xml, doc)
         xml = '%s</add>' % (xml)
         return xml
     
@@ -104,7 +103,7 @@ class Solr:
         """Sends the xml to Solr server.
         """
         url = '%s/update' % (self.base_url)
-        request = Request(url, xml)
+        request = Request(url, xml.encode('utf-8'))
         request.add_header('Content-Type','text/xml')
         poster = urlopen(request)
         poster.read()

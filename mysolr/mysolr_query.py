@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 """
+
 from urllib import urlencode
 
 class SolrQuery:
