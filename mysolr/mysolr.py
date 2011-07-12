@@ -100,7 +100,7 @@ class Solr:
     def _post_json(self, json_doc):
         """Sends the json to Solr server.
         """
-        url = '%s/update' % (self.base_url)
+        url = '%s/update/json' % (self.base_url)
         request = Request(url, json_doc.encode('utf-8'))
         request.add_header('Content-Type','application/json')
         poster = urlopen(request)
