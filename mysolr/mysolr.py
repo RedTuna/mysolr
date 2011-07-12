@@ -35,7 +35,7 @@ class Solr:
         elif type == 'json':
             self._post_json(json.dumps(array_of_hash))
         else:
-            raise 'The given type isn\'t correct. Valid types are "json" and "xml".'
+            raise RuntimeError('The given type isn\'t correct. Valid types are "json" and "xml".')
     
     def delete_by_key(self, identifier):
         """Sends an ID delete message to Solr.

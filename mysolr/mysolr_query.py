@@ -13,19 +13,7 @@ class SolrQuery:
     VALID_FACET_DATE_OTHERS = ['before', 'after', 'between', 'none', 'all']
     VALID_FACET_DATE_INCLUDES = ['lower', 'upper', 'edge', 'outer', 'all']
     
-    def __init__(self, q=None, start=0, rows=10, op=None,
-                 df=None, facets=None, facet_method=None,
-                 facet_limit=None, facet_mincount=None,
-                 facet_sort=None, facet_prefix=None,
-                 facet_missing=None, facet_dates=None,
-                 facet_date_start=None, facet_date_end=None,
-                 facet_date_gap=None, facet_date_hardend=None,
-                 facet_date_other=None, facet_date_include=None,
-                 facet_ranges=None, facet_range_start=None,
-                 facet_range_end=None, facet_range_gap=None,
-                 facet_range_hardend=None, facet_range_other=None,
-                 facet_range_include=None, facet_pivot=None,
-                 fq=None, fl=None, sort=None, omit_header=None):
+    def __init__(self, **kwargs):
         """Solr Query object initialization
     
         Keyword arguments:
@@ -88,37 +76,37 @@ class SolrQuery:
         omit_header -- boolean param to decide if we want to receive search header or not
     
         """
-        self.q = q
-        self.start = start
-        self.rows = rows
-        self.op = op
-        self.df = df
-        self.facets = facets
-        self.facet_limit = facet_limit
-        self.facet_mincount = facet_mincount
-        self.facet_sort = facet_sort
-        self.facet_prefix = facet_prefix
-        self.facet_missing = facet_missing
-        self.facet_method = facet_method
-        self.facet_dates = facet_dates
-        self.facet_date_start = facet_date_start
-        self.facet_date_end = facet_date_end
-        self.facet_date_gap = facet_date_gap
-        self.facet_date_hardend = facet_date_hardend
-        self.facet_date_other = facet_date_other
-        self.facet_date_include = facet_date_include
-        self.facet_ranges = facet_ranges
-        self.facet_range_start = facet_range_start
-        self.facet_range_end = facet_range_end
-        self.facet_range_gap = facet_range_gap
-        self.facet_range_hardend = facet_range_hardend
-        self.facet_range_other = facet_range_other
-        self.facet_range_include = facet_range_include
-        self.facet_pivot = facet_pivot
-        self.fq = fq
-        self.fl = fl
-        self.sort = sort
-        self.omit_header = omit_header
+        self.q = kwargs.get('q', None)
+        self.start = kwargs.get('start', 0)
+        self.rows = kwargs.get('rows', 10)
+        self.op = kwargs.get('op', None)
+        self.df = kwargs.get('df', None)
+        self.facets = kwargs.get('facets', None)
+        self.facet_limit = kwargs.get('facet_limit', None)
+        self.facet_mincount = kwargs.get('facet_mincount', None)
+        self.facet_sort = kwargs.get('facet_sort', None)
+        self.facet_prefix = kwargs.get('facet_prefix', None)
+        self.facet_missing = kwargs.get('facet_missing', None)
+        self.facet_method = kwargs.get('facet_method', None)
+        self.facet_dates = kwargs.get('facet_dates', None)
+        self.facet_date_start = kwargs.get('facet_date_start', None)
+        self.facet_date_end = kwargs.get('facet_date_end', None)
+        self.facet_date_gap = kwargs.get('facet_date_gap', None)
+        self.facet_date_hardend = kwargs.get('facet_date_hardend', None)
+        self.facet_date_other = kwargs.get('facet_date_other', None)
+        self.facet_date_include = kwargs.get('facet_date_include', None)
+        self.facet_ranges = kwargs.get('facet_ranges', None)
+        self.facet_range_start = kwargs.get('facet_range_start', None)
+        self.facet_range_end = kwargs.get('facet_range_end', None)
+        self.facet_range_gap = kwargs.get('facet_range_gap', None)
+        self.facet_range_hardend = kwargs.get('facet_range_hardend', None)
+        self.facet_range_other = kwargs.get('facet_range_other', None)
+        self.facet_range_include = kwargs.get('facet_range_include', None)
+        self.facet_pivot = kwargs.get('facet_pivot', None)
+        self.fq = kwargs.get('fq', None)
+        self.fl = kwargs.get('fl', None)
+        self.sort = kwargs.get('sort', None)
+        self.omit_header = kwargs.get('omit_header', None)
   
     def build(self):
         """
