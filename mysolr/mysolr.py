@@ -5,7 +5,6 @@
 
 from urllib2 import urlopen, Request
 import json
-from mysolr_query import SolrQuery
 from mysolr_response import SolrResponse
 
 class Solr:
@@ -26,13 +25,13 @@ class Solr:
         conn.close()
         return SolrResponse(response)
     
-    def update(self, array_of_hash, type='xml'):
+    def update(self, array_of_hash, input_type='xml'):
         """Sends an update/add message to add the array of hashes(documents) to
         Solr.
         """
-        if type == 'xml':
-            self._post_xml(self._get_add_xml(array_of_hash))
-        elif type == 'json':
+        if input_type == 'xml':
+            self._post_xml(_get_add_xml(array_of_hash))
+        elif input_type == 'json':
             self._post_json(json.dumps(array_of_hash))
         else:
             raise RuntimeError('The given type isn\'t correct. Valid types are "json" and "xml".')
@@ -49,25 +48,8 @@ class Solr:
         xml = '<delete><query>%s</query></delete>' % (query)
         self._post_xml(xml)
     
-    def _get_add_xml(self, array_of_hash, overwrite=True):
-        """Creates add XML message to send to Solr based on the array of hashes
-        (documents) provided.
-        
-        Keyword arguments:
-        overwrite --  newer documents will replace previously added documents
-                      with the same uniqueKey (default is True)
-        """
-        xml = '<add overwrite="%s">' % ('true' if overwrite else 'false')
-        for doc_hash in array_of_hash:
-            doc = '<doc>'
-            for key, value in doc_hash.items():
-                doc = '%s<field name="%s">%s</field>' % (doc, key, value)
-            doc = '%s</doc>' % (doc)
-            xml = '%s%s' % (xml, doc)
-        xml = '%s</add>' % (xml)
-        return xml
-    
-    def commit(self, wait_flush=True, wait_searcher=True, expunge_deletes=False):
+    def commit(self, wait_flush=True,
+               wait_searcher=True, expunge_deletes=False):
         """Sends a commit message to Solr.
         
         Keyword arguments:
@@ -95,8 +77,8 @@ class Solr:
         max_segments -- optimizes down to at most this number of segments (default is 1)
         """
         xml = '<optimize waitFlush="%s" waitSearcher="%s" maxSegments="%s" />' % ('true' if wait_flush else 'false',
-                                                                                                      'true' if wait_searcher else 'false',
-                                                                                                      max_segments)
+                                                                                  'true' if wait_searcher else 'false',
+                                                                                  max_segments)
         self._post_xml(xml)
     
     def rollback(self):
@@ -115,12 +97,30 @@ class Solr:
         poster.read()
         poster.close()
     
-    def _post_json(self, json):
+    def _post_json(self, json_doc):
         """Sends the json to Solr server.
         """
         url = '%s/update' % (self.base_url)
-        request = Request(url, xml.encode('utf-8'))
+        request = Request(url, json_doc.encode('utf-8'))
         request.add_header('Content-Type','application/json')
         poster = urlopen(request)
         poster.read()
         poster.close()
+
+def _get_add_xml(array_of_hash, overwrite=True):
+    """Creates add XML message to send to Solr based on the array of hashes
+    (documents) provided.
+    
+    Keyword arguments:
+    overwrite --  newer documents will replace previously added documents
+                  with the same uniqueKey (default is True)
+    """
+    xml = '<add overwrite="%s">' % ('true' if overwrite else 'false')
+    for doc_hash in array_of_hash:
+        doc = '<doc>'
+        for key, value in doc_hash.items():
+            doc = '%s<field name="%s">%s</field>' % (doc, key, value)
+        doc = '%s</doc>' % (doc)
+        xml = '%s%s' % (xml, doc)
+    xml = '%s</add>' % (xml)
+    return xml

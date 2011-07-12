@@ -3,8 +3,14 @@
 """
 """
 
-__author__ = "Rubén Abad"
-__email__ = "rabad@eeupm.com"
+__author__ = "Rubén Abad and Miguel Olivares"
+__credits__ = ["Rubén Abad", "Miguel Olivares", "Francisco Javier Alba",
+               "Carlos Navarro"]
+__license__ = "GPL"
+__version__ = "0.0.1"
+__maintainer__ = "Rubén Abad"
+__email__ = "ruabag@gmail.com"
+__status__ = "Development"
 
 from mysolr_query import SolrQuery
 from mysolr_response import SolrResponse
