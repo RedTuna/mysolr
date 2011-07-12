@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 """
-
-from urllib2 import urlopen, Request
+import requests
 import json
 from mysolr_response import SolrResponse
 
@@ -20,9 +19,8 @@ class Solr:
         object
         """
         query_url = '%s/select?%s' % (self.base_url, query.build())
-        conn = urlopen(query_url)
-        response = eval(conn.read())
-        conn.close()
+        response = eval(requests.get(query_url))
+        response.raise_for_status()
         return SolrResponse(response)
     
     def update(self, array_of_hash, input_type='xml'):
@@ -30,9 +28,9 @@ class Solr:
         Solr.
         """
         if input_type == 'xml':
-            self._post_xml(_get_add_xml(array_of_hash))
+            return self._post_xml(_get_add_xml(array_of_hash))
         elif input_type == 'json':
-            self._post_json(json.dumps(array_of_hash))
+            return self._post_json(json.dumps(array_of_hash))
         else:
             raise RuntimeError('The given type isn\'t correct. Valid types are "json" and "xml".')
     
@@ -40,13 +38,13 @@ class Solr:
         """Sends an ID delete message to Solr.
         """
         xml = '<delete><id>%s</id></delete>' % (identifier)
-        self._post_xml(xml)
+        return self._post_xml(xml)
     
     def delete_by_query(self, query):
         """Sends a query delete message to Solr.
         """
         xml = '<delete><query>%s</query></delete>' % (query)
-        self._post_xml(xml)
+        return self._post_xml(xml)
     
     def commit(self, wait_flush=True,
                wait_searcher=True, expunge_deletes=False):
@@ -63,7 +61,7 @@ class Solr:
         xml = '<commit waitFlush="%s" waitSearcher="%s" expungeDeletes="%s" />' % ('true' if wait_flush else 'false',
                                                                                    'true' if wait_searcher else 'false',
                                                                                    'true' if expunge_deletes else 'false')
-        self._post_xml(xml)
+        return self._post_xml(xml)
     
     def optimize(self, wait_flush=True, wait_searcher=True, max_segments=1):
         """Sends an optimize message to Solr.
@@ -79,33 +77,29 @@ class Solr:
         xml = '<optimize waitFlush="%s" waitSearcher="%s" maxSegments="%s" />' % ('true' if wait_flush else 'false',
                                                                                   'true' if wait_searcher else 'false',
                                                                                   max_segments)
-        self._post_xml(xml)
+        return self._post_xml(xml)
     
     def rollback(self):
         """Sends a rollback message to Solr server.
         """
         xml = '<rollback />'
-        self._post_xml(xml)
+        return self._post_xml(xml)
     
     def _post_xml(self, xml):
         """Sends the xml to Solr server.
         """
         url = '%s/update' % (self.base_url)
-        request = Request(url, xml.encode('utf-8'))
-        request.add_header('Content-Type','text/xml')
-        poster = urlopen(request)
-        poster.read()
-        poster.close()
+        response = requests.post(url, data=xml.encode('utf-8'),
+                                 headers={'Content-Type': 'text/xml'})
+        response.raise_for_status()
     
     def _post_json(self, json_doc):
         """Sends the json to Solr server.
         """
         url = '%s/update/json' % (self.base_url)
-        request = Request(url, json_doc.encode('utf-8'))
-        request.add_header('Content-Type','application/json')
-        poster = urlopen(request)
-        poster.read()
-        poster.close()
+        response = requests.post(url, data=json_doc.encode('utf-8'),
+                                 headers={'Content-Type': 'application/json'})
+        response.raise_for_status()
 
 def _get_add_xml(array_of_hash, overwrite=True):
     """Creates add XML message to send to Solr based on the array of hashes
