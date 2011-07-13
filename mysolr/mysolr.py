@@ -19,9 +19,10 @@ class Solr:
         object
         """
         kwargs['wt'] = 'python' 
-        response = eval(requests.get('%s/select' % (self.base_url), kwargs).read())
+        response = requests.get('%s/select' % (self.base_url), kwargs)
         response.raise_for_status()
-        return SolrResponse(response)
+        response_object = eval(response.read())
+        return SolrResponse(response_object)
     
     def update(self, array_of_hash, input_type='xml', commit=True):
         """Sends an update/add message to add the array of hashes(documents) to
