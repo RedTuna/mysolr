@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
+""" SolrResponse class that provides an easy access to a solr search
+response.
+
+>>> response.status
+0
+>>> response.total_result
+10
+>>> reponse['qtime']
+13
+
 """
 
 class SolrDict(dict):
