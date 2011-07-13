@@ -9,42 +9,48 @@ from mysolr_response import SolrResponse
 class Solr:
     """
     """
-    def __init__(self, base_url):
+    def __init__(self, base_url='http://localhost:8080/solr'):
         """Initializes a Solr object. Solr URL is a needed parameter.
         """
         self.base_url = base_url
     
-    def search(self, query):
-        """Queries Solr with the given SolrQuery and returns a SolrResponse
+    def search(self, **kwargs):
+        """Queries Solr with the given kwargs and returns a SolrResponse
         object
         """
-        query_url = '%s/select?%s' % (self.base_url, query.build())
-        response = eval(requests.get(query_url))
+        kwargs['wt'] = 'python' 
+        response = eval(requests.get('%s/select' % (self.base_url), kwargs))
         response.raise_for_status()
         return SolrResponse(response)
     
-    def update(self, array_of_hash, input_type='xml'):
+    def update(self, array_of_hash, input_type='xml', commit=True):
         """Sends an update/add message to add the array of hashes(documents) to
         Solr.
         """
         if input_type == 'xml':
-            return self._post_xml(_get_add_xml(array_of_hash))
+            self._post_xml(_get_add_xml(array_of_hash))
         elif input_type == 'json':
-            return self._post_json(json.dumps(array_of_hash))
+            self._post_json(json.dumps(array_of_hash))
         else:
             raise RuntimeError('The given type isn\'t correct. Valid types are "json" and "xml".')
+        if commit:
+            self.commit()
     
-    def delete_by_key(self, identifier):
+    def delete_by_key(self, identifier, commit=True):
         """Sends an ID delete message to Solr.
         """
         xml = '<delete><id>%s</id></delete>' % (identifier)
-        return self._post_xml(xml)
+        self._post_xml(xml)
+        if commit:
+            self.commit()
     
-    def delete_by_query(self, query):
+    def delete_by_query(self, query, commit=True):
         """Sends a query delete message to Solr.
         """
         xml = '<delete><query>%s</query></delete>' % (query)
-        return self._post_xml(xml)
+        self._post_xml(xml)
+        if commit:
+            self.commit()
     
     def commit(self, wait_flush=True,
                wait_searcher=True, expunge_deletes=False):
@@ -61,7 +67,7 @@ class Solr:
         xml = '<commit waitFlush="%s" waitSearcher="%s" expungeDeletes="%s" />' % ('true' if wait_flush else 'false',
                                                                                    'true' if wait_searcher else 'false',
                                                                                    'true' if expunge_deletes else 'false')
-        return self._post_xml(xml)
+        self._post_xml(xml)
     
     def optimize(self, wait_flush=True, wait_searcher=True, max_segments=1):
         """Sends an optimize message to Solr.
@@ -77,13 +83,13 @@ class Solr:
         xml = '<optimize waitFlush="%s" waitSearcher="%s" maxSegments="%s" />' % ('true' if wait_flush else 'false',
                                                                                   'true' if wait_searcher else 'false',
                                                                                   max_segments)
-        return self._post_xml(xml)
+        self._post_xml(xml)
     
     def rollback(self):
         """Sends a rollback message to Solr server.
         """
         xml = '<rollback />'
-        return self._post_xml(xml)
+        self._post_xml(xml)
     
     def _post_xml(self, xml):
         """Sends the xml to Solr server.
