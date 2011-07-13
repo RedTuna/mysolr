@@ -12,6 +12,5 @@ __maintainer__ = "Rubén Abad"
 __email__ = "ruabag@gmail.com"
 __status__ = "Development"
 
-from mysolr_query import SolrQuery
 from mysolr_response import SolrResponse
 from mysolr import Solr
