@@ -19,7 +19,7 @@ class Solr:
         object
         """
         kwargs['wt'] = 'python' 
-        response = eval(requests.get('%s/select' % (self.base_url), kwargs).read()))
+        response = eval(requests.get('%s/select' % (self.base_url), kwargs).read())
         response.raise_for_status()
         return SolrResponse(response)
     
