@@ -39,7 +39,8 @@ class SolrResponse(SolrDict):
         self.total_results = solr_response['response']['numFound']
         self.start = solr_response['response']['start']
         self.documents = solr_response['response']['docs']
-        self.facets = self.__parse_facets(solr_response['facet_counts'])
+        if 'facet_counts' in solr_response:
+            self.facets = self.__parse_facets(solr_response['facet_counts'])
   
     def __parse_facets(self, solr_facets):
         """ Parse facets. """
