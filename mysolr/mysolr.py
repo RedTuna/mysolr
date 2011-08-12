@@ -132,8 +132,10 @@ class Solr:
 
         """
         url = '%s/update' % (self.base_url)
-        response = requests.post(url, data=xml.encode('utf-8'),
-                                 headers={'Content-Type': 'text/xml; charset=utf-8'})
+        xml_data = xml.encode('utf-8')
+        response = requests.post(url, data=xml_data,
+                                 headers={'Content-Type': 'text/xml; charset=utf-8',
+                                          'Content-Length': "%s" % len(xml_data)})
         response.raise_for_status()
     
     def _post_json(self, json_doc):
@@ -141,8 +143,10 @@ class Solr:
 
         """
         url = '%s/update/json' % (self.base_url)
-        response = requests.post(url, data=json_doc.encode('utf-8'),
-                                 headers={'Content-Type': 'application/json; charset=utf-8'})
+        json_data = json_doc.encode('utf-8')
+        response = requests.post(url, data=json_data,
+                                 headers={'Content-Type': 'application/json; charset=utf-8',
+                                          'Content-Length': "%s" % len(json_data)})
         response.raise_for_status()
 
 def _get_add_xml(array_of_hash, overwrite=True):
