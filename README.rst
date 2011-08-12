@@ -9,6 +9,14 @@ Instalation
 From source code: ::
 
   python setup.py install
+  
+
+Solr Configuration
+..................
+
+To update Solr Index using JSON, a few lines must be added at Solr's **solrconfig.xml**: ::
+
+    <requestHandler name="/update/json" class="solr.JsonUpdateRequestHandler" startup="lazy" />
 
 
 Usage
