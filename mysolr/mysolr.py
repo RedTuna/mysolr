@@ -41,21 +41,25 @@ class Solr:
         response_object = eval(response.read())
         return SolrResponse(response_object)
     
-    def update(self, array_of_hash, input_type='xml', commit=True):
+    def update(self, documents, input_type='xml', commit=True):
         """ Sends an update/add message to add the array of hashes(documents) to
         Solr.
 
         Keyword arguments:
-        commit -- if True, sends a commit message after the operation is
-                  executed.
+        documents  -- A list of solr-compatible documents to index
+        input_type -- The format which documents are sent. Remember that json is
+                      not supported until version 3
+        commit     -- if True, sends a commit message after the operation is
+                      executed.
 
         """
+        assert input_type in ['xml', 'json']#,
+              #'The given type isn\'t correct. Valid types are "json" and "xml".')
+
         if input_type == 'xml':
-            self._post_xml(_get_add_xml(array_of_hash))
-        elif input_type == 'json':
-            self._post_json(json.dumps(array_of_hash))
+            self._post_xml(_get_add_xml(documents))
         else:
-            raise RuntimeError('The given type isn\'t correct. Valid types are "json" and "xml".')
+            self._post_json(json.dumps(documents))
         if commit:
             self.commit()
     
@@ -134,7 +138,7 @@ class Solr:
         url = '%s/update' % (self.base_url)
         xml_data = xml.encode('utf-8')
         response = requests.post(url, data=xml_data,
-                                 headers={'Content-Type': 'text/xml; charset=utf-8',
+                                 headers={'Content-type': 'text/xml; charset=utf-8',
                                           'Content-Length': "%s" % len(xml_data)})
         response.raise_for_status()
     
@@ -145,7 +149,7 @@ class Solr:
         url = '%s/update/json' % (self.base_url)
         json_data = json_doc.encode('utf-8')
         response = requests.post(url, data=json_data,
-                                 headers={'Content-Type': 'application/json; charset=utf-8',
+                                 headers={'Content-type': 'application/json; charset=utf-8',
                                           'Content-Length': "%s" % len(json_data)})
         response.raise_for_status()
 
