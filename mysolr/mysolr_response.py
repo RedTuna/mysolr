@@ -64,6 +64,6 @@ def parse_facets(solr_facets):
         facet_type_dict = SolrDict()
         for name, facet in facets.iteritems():
             parsed = [tuple(facet[i:i+2]) for i in xrange(0, len(facet), 2)]
-            facet_type_dict[name] = SolrDict(parsed)
+            facet_type_dict[name] = SolrDict(parsed)    
         result[facet_type] = facet_type_dict
     return result

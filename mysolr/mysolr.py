@@ -166,7 +166,11 @@ def _get_add_xml(array_of_hash, overwrite=True):
     for doc_hash in array_of_hash:
         doc = '<doc>'
         for key, value in doc_hash.items():
-            doc = '%s<field name="%s">%s</field>' % (doc, key, value)
+            if type(value) == type(list()):
+                for v in value:
+                    doc = '%s<field name="%s">%s</field>' % (doc, key, v)
+            else:
+                doc = '%s<field name="%s">%s</field>' % (doc, key, value)
         doc = '%s</doc>' % (doc)
         xml = '%s%s' % (xml, doc)
     xml = '%s</add>' % (xml)
