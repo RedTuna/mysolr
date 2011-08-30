@@ -36,7 +36,7 @@ class Solr:
         """
         assert 'q' in kwargs
         kwargs['wt'] = 'python'
-        response = requests.get('%s/select' % (self.base_url), kwargs)
+        response = requests.get('%s/select' % (self.base_url), params=kwargs)
         response.raise_for_status()
         response_object = eval(response.read())
         return SolrResponse(response_object)
