@@ -1,12 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-""" Solr class that provides an easy access to operate with a Solr
-server.
+"""
+mysolr.mysolr
+~~~~~~~~~~~~~
+
+This module impliments the mysolr Solr class, providing an easy access to
+operate with a Solr server.
 
 >>> from mysolr import Solr
 >>> solr = Solr('http://myserver:8080/solr')
->>> query_response = solr.search({'q':'*:*', 'rows': 0, 'start': 0,
-                                  'facet': 'true', 'facet.field': 'province'})
+>>> query_response = solr.search('q':'*:*', 'rows': 0, 'start': 0,
+                                'facet': 'true', 'facet.field': 'province')
 
 """
 import requests
@@ -14,24 +18,21 @@ import json
 from mysolr_response import SolrResponse
 
 class Solr:
-    """ Acts as an easy-to-use interface to Solr.
-    
-    """
+    """Acts as an easy-to-use interface to Solr."""
+
     def __init__(self, base_url='http://localhost:8080/solr'):
         """ Initializes a Solr object. Solr URL is a needed parameter.
-
         """
         self.base_url = base_url
     
     def search(self, **kwargs):
-        """ Queries Solr with the given kwargs and returns a SolrResponse
+        """Queries Solr with the given kwargs and returns a SolrResponse
         object.
 
-        Keyword arguments:
-        kwargs -- dictionary containing any of the available Solr query
-                  parameters described in 
-                  http://wiki.apache.org/solr/CommonQueryParameters.
-                  'q' is a mandatory parameter.
+        :param **kwargs: Dictionary containing any of the available Solr query
+                         parameters described in 
+                         http://wiki.apache.org/solr/CommonQueryParameters.
+                         'q' is a mandatory parameter.
         
         """
         assert 'q' in kwargs
@@ -42,15 +43,14 @@ class Solr:
         return SolrResponse(response_object)
     
     def update(self, documents, input_type='xml', commit=True):
-        """ Sends an update/add message to add the array of hashes(documents) to
+        """Sends an update/add message to add the array of hashes(documents) to
         Solr.
 
-        Keyword arguments:
-        documents  -- A list of solr-compatible documents to index
-        input_type -- The format which documents are sent. Remember that json is
-                      not supported until version 3
-        commit     -- if True, sends a commit message after the operation is
-                      executed.
+        :param documents: A list of solr-compatible documents to index.
+        :param input_type: The format which documents are sent. Remember that json
+                           is not supported until version 3.
+        :param commit: If True, sends a commit message after the operation is
+                       executed.
 
         """
         assert input_type in ['xml', 'json']#,
@@ -64,11 +64,10 @@ class Solr:
             self.commit()
     
     def delete_by_key(self, identifier, commit=True):
-        """ Sends an ID delete message to Solr.
+        """Sends an ID delete message to Solr.
 
-        Keyword arguments:
-        commit -- if True, sends a commit message after the operation is
-                  executed.
+        :param commit: If True, sends a commit message after the operation is
+                       executed.
 
         """
         xml = '<delete><id>%s</id></delete>' % (identifier)
@@ -77,11 +76,10 @@ class Solr:
             self.commit()
     
     def delete_by_query(self, query, commit=True):
-        """ Sends a query delete message to Solr.
+        """Sends a query delete message to Solr.
 
-        Keyword arguments:
-        commit -- if True, sends a commit message after the operation is
-                  executed.
+        :param commit: If True, sends a commit message after the operation is
+                       executed.
 
         """
         xml = '<delete><query>%s</query></delete>' % (query)
@@ -91,15 +89,14 @@ class Solr:
     
     def commit(self, wait_flush=True,
                wait_searcher=True, expunge_deletes=False):
-        """ Sends a commit message to Solr.
+        """Sends a commit message to Solr.
         
-        Keyword arguments:
-        wait_flush -- block until index changes are flushed to disk (default is
-                      True)
-        wait_searcher -- block until a new searcher is opened and registered as
-                         the main query searcher, making the changes visible
-                         (default is True)
-        expunge_deletes --  merge segments with deletes away (default is False)
+        :param wait_flush: Block until index changes are flushed to disk (default is
+                           True).
+        :param wait_searcher: Block until a new searcher is opened and registered
+                              as the main query searcher, making the changes
+                              visible (default is True).
+        :param expunge_deletes: Merge segments with deletes away (default is False)
 
         """
         xml = '<commit waitFlush="%s" waitSearcher="%s" expungeDeletes="%s" />' % ('true' if wait_flush else 'false',
@@ -108,15 +105,14 @@ class Solr:
         self._post_xml(xml)
     
     def optimize(self, wait_flush=True, wait_searcher=True, max_segments=1):
-        """ Sends an optimize message to Solr.
+        """Sends an optimize message to Solr.
         
-        Keyword arguments:
-        wait_flush -- block until index changes are flushed to disk (default is
-                      True)
-        wait_searcher -- block until a new searcher is opened and registered as
-                         the main query searcher, making the changes visible
-                         (default is True)
-        max_segments -- optimizes down to at most this number of segments (default is 1)
+        :param wait_flush: Block until index changes are flushed to disk (default
+                           is True)
+        :param wait_searcher: Block until a new searcher is opened and registered as
+                              the main query searcher, making the changes visible
+                              (default is True)
+        :param max_segments: Optimizes down to at most this number of segments (default is 1)
 
         """
         xml = '<optimize waitFlush="%s" waitSearcher="%s" maxSegments="%s" />' % ('true' if wait_flush else 'false',
@@ -125,15 +121,14 @@ class Solr:
         self._post_xml(xml)
     
     def rollback(self):
-        """ Sends a rollback message to Solr server.
-
-        """
+        """Sends a rollback message to Solr server."""
         xml = '<rollback />'
         self._post_xml(xml)
     
     def _post_xml(self, xml):
         """ Sends the xml to Solr server.
 
+        :param xml: XML document to be posted.
         """
         url = '%s/update' % (self.base_url)
         xml_data = xml.encode('utf-8')
@@ -145,6 +140,7 @@ class Solr:
     def _post_json(self, json_doc):
         """ Sends the json to Solr server.
 
+        :param json_doc: JSON document to be posted.
         """
         url = '%s/update/json' % (self.base_url)
         json_data = json_doc.encode('utf-8')
@@ -157,9 +153,8 @@ def _get_add_xml(array_of_hash, overwrite=True):
     """ Creates add XML message to send to Solr based on the array of hashes
     (documents) provided.
     
-    Keyword arguments:
-    overwrite --  newer documents will replace previously added documents
-                  with the same uniqueKey (default is True)
+    :param overwrite: Newer documents will replace previously added documents
+                      with the same uniqueKey (default is True)
     
     """
     xml = '<add overwrite="%s">' % ('true' if overwrite else 'false')
