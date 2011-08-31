@@ -11,33 +11,9 @@ response.
 
 """
 
-class SolrDict(dict):
-    """ Easy-use dictionary.
 
-    """
-
-    def __getattr__(self, key):
-        """ getattr = getitem.
-
-        """
-        return self.__getitem__(key)
-
-    def __setattr__(self, key, value):
-        """ setattr = setitem.
-
-        """
-        self.__setitem__(key, value)
-
-    def __missing__(self, key):
-        """ Return None instead of KeyError.
-
-        """
-        return None
-
-class SolrResponse(SolrDict):
-    """ Parse solr response and make it accesible.
-
-    """
+class SolrResponse(object):
+    """ Parse solr response and make it accesible."""
 
     def __init__(self, solr_response):
         """ Init method
@@ -46,7 +22,7 @@ class SolrResponse(SolrDict):
         solr_response -- Python object result of search query
 
         """
-        super(SolrResponse, self).__init__()
+        self.raw_response = solr_response
         self.status = solr_response['responseHeader']['status']
         self.qtime = solr_response['responseHeader']['QTime']
         self.total_results = solr_response['response']['numFound']
@@ -54,16 +30,19 @@ class SolrResponse(SolrDict):
         self.documents = solr_response['response']['docs']
         if 'facet_counts' in solr_response:
             self.facets = parse_facets(solr_response['facet_counts'])
-  
-def parse_facets(solr_facets):
-    """ Parse facets.
 
-    """
-    result = SolrDict()
+    def __repr__(self):
+        values = (self.status, self.qtime, self.total_results)
+        return '<SolrResponse status=%d, qtime=%d, total_results=%d>' % values
+
+
+def parse_facets(solr_facets):
+    """ Parse facets."""
+    result = {}
     for facet_type, facets in solr_facets.iteritems():
-        facet_type_dict = SolrDict()
+        facet_type_dict = {}
         for name, facet in facets.iteritems():
             parsed = [tuple(facet[i:i+2]) for i in xrange(0, len(facet), 2)]
-            facet_type_dict[name] = SolrDict(parsed)    
+            facet_type_dict[name] = dict(parsed)
         result[facet_type] = facet_type_dict
     return result
