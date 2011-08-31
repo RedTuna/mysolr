@@ -1,1 +1,280 @@
-My GitHub Page
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to mysolr’s documentation! &mdash; mysolr v0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mysolr v0.1.0 documentation" href="#" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">mysolr v0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mysolr">
+<span id="welcome-to-mysolr-s-documentation"></span><h1>Welcome to mysolr&#8217;s documentation!<a class="headerlink" href="#module-mysolr" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+<div class="section" id="solr-object">
+<h2>Solr Object<a class="headerlink" href="#solr-object" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mysolr.Solr">
+<em class="property">class </em><tt class="descclassname">mysolr.</tt><tt class="descname">Solr</tt><big>(</big><em>base_url='http://localhost:8080/solr'</em><big>)</big><a class="headerlink" href="#mysolr.Solr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Acts as an easy-to-use interface to Solr.</p>
+<dl class="method">
+<dt id="mysolr.Solr.commit">
+<tt class="descname">commit</tt><big>(</big><em>wait_flush=True</em>, <em>wait_searcher=True</em>, <em>expunge_deletes=False</em><big>)</big><a class="headerlink" href="#mysolr.Solr.commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a commit message to Solr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wait_flush</strong> &#8211; Block until index changes are flushed to disk (default is
+True).</li>
+<li><strong>wait_searcher</strong> &#8211; Block until a new searcher is opened and registered
+as the main query searcher, making the changes
+visible (default is True).</li>
+<li><strong>expunge_deletes</strong> &#8211; Merge segments with deletes away (default is False)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mysolr.Solr.delete_by_key">
+<tt class="descname">delete_by_key</tt><big>(</big><em>identifier</em>, <em>commit=True</em><big>)</big><a class="headerlink" href="#mysolr.Solr.delete_by_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an ID delete message to Solr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> &#8211; If True, sends a commit message after the operation is
+executed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mysolr.Solr.delete_by_query">
+<tt class="descname">delete_by_query</tt><big>(</big><em>query</em>, <em>commit=True</em><big>)</big><a class="headerlink" href="#mysolr.Solr.delete_by_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a query delete message to Solr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> &#8211; If True, sends a commit message after the operation is
+executed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mysolr.Solr.optimize">
+<tt class="descname">optimize</tt><big>(</big><em>wait_flush=True</em>, <em>wait_searcher=True</em>, <em>max_segments=1</em><big>)</big><a class="headerlink" href="#mysolr.Solr.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an optimize message to Solr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wait_flush</strong> &#8211; Block until index changes are flushed to disk (default
+is True)</li>
+<li><strong>wait_searcher</strong> &#8211; Block until a new searcher is opened and registered as
+the main query searcher, making the changes visible
+(default is True)</li>
+<li><strong>max_segments</strong> &#8211; Optimizes down to at most this number of segments (default is 1)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mysolr.Solr.rollback">
+<tt class="descname">rollback</tt><big>(</big><big>)</big><a class="headerlink" href="#mysolr.Solr.rollback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a rollback message to Solr server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mysolr.Solr.search">
+<tt class="descname">search</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mysolr.Solr.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries Solr with the given kwargs and returns a SolrResponse
+object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> &#8211; <p>Dictionary containing any of the available Solr query
+parameters described in 
+<a class="reference external" href="http://wiki.apache.org/solr/CommonQueryParameters">http://wiki.apache.org/solr/CommonQueryParameters</a>.
+&#8216;q&#8217; is a mandatory parameter.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mysolr.Solr.update">
+<tt class="descname">update</tt><big>(</big><em>documents</em>, <em>input_type='xml'</em>, <em>commit=True</em><big>)</big><a class="headerlink" href="#mysolr.Solr.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an update/add message to add the array of hashes(documents) to
+Solr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>documents</strong> &#8211; A list of solr-compatible documents to index.</li>
+<li><strong>input_type</strong> &#8211; The format which documents are sent. Remember that json
+is not supported until version 3.</li>
+<li><strong>commit</strong> &#8211; If True, sends a commit message after the operation is
+executed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/mysolr-sidebar.png" alt="Logo"/>
+  </a>
+</p>
+
+<p>
+  mysolr is an easy and fast binding to work with <a href="http://lucene.apache.org/solr/">Apache Solr</a>
+  from Python. You are currently looking at the documentation of the development release.
+</p>
+
+<h3>Feedback</h3>
+<p>
+  Feedback is greatly appreciated. If you have any questions, comments,
+  random praise, or anonymous threats, <a href="mailto:ruabag@gmail.com">
+  shoot me an email</a>.
+</p>
+
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://rabad.github.com/mysolr">The mysolr Website</a></li>
+  <!-- <li><a href="http://pypi.python.org/pypi/requests">Requests @ PyPI</a></li>-->
+  <li><a href="http://github.com/rabad/mysolr">mysolr @ GitHub</a></li>
+  <li><a href="http://github.com/rabad/mysolr/issues">Issue Tracker</a></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2011, Rubén Abad, Miguel Olivares / Theme based on <a href="http://kennethreitz.com/">Kenneth Reitz</a>'s.
+    </div>
+    <a href="https://github.com/rabad/mysolr">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+    </a>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8742933-11']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+
+    <script type="text/javascript">
+      (function() {
+        var t   = document.createElement('script');
+        t.type  = 'text/javascript';
+        t.async = true;
+        t.id    = 'gauges-tracker';
+        t.setAttribute('data-site-id',
+                       '4ddc27f6613f5d186d000007');
+        t.src = '//secure.gaug.es/track.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(t, s);
+      })();
+    </script>
+  </body>
+</html>
