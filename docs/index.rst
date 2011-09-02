@@ -6,12 +6,12 @@
 Welcome to mysolr's documentation!
 ==================================
 
-.. module:: mysolr
-
 Contents:
 
 .. toctree::
    :maxdepth: 2
+
+   api/classes
 
 Indices and tables
 ==================
@@ -19,9 +19,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-Solr Object
------------
-
-.. autoclass:: Solr
-   :inherited-members:
