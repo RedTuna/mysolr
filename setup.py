@@ -19,6 +19,7 @@ CLASSIFIERS = [
 setup(name='mysolr',
       version='0.1',
       description='Solr Python binding',
+      long_description = open('README.rst').read(),
       author='Rubén Abad',
       author_email='ruabag@gmail.com',
       url='http://github.com/rabad/mysolr',
