@@ -6,7 +6,26 @@
 Welcome to mysolr's documentation!
 ==================================
 
-Contents:
+Mysolr was born to be a fast and easy-to-use client for solr api and because 
+existing python clients don't fullfill this conditions.
+
+
+Basic Usage
+-----------
+.. raw:: html
+
+    <script src="https://gist.github.com/1217915.js?file=mysorl_gist"></script>
+
+
+Related projects
+----------------
+
+* solrpy_
+* pysolr_
+* djangosolr_
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
@@ -14,9 +33,6 @@ Contents:
    user/installation
    api/classes
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. _solrpy: http://code.google.com/p/solrpy/
+.. _pysolr: https://github.com/toastdriven/pysolr/
+.. _djangosolr: https://github.com/sophilabs/django-solr
