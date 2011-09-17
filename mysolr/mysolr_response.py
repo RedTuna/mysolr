@@ -22,13 +22,20 @@ class SolrResponse(object):
         solr_response -- Python object result of search query
 
         """
+        #: Solr full response.
         self.raw_response = solr_response
+        #: Response status.
         self.status = solr_response['responseHeader']['status']
+        #: Query time.
         self.qtime = solr_response['responseHeader']['QTime']
+        #: Number of results.
         self.total_results = solr_response['response']['numFound']
+        #: Offset.
         self.start = solr_response['response']['start']
+        #: Documents list.
         self.documents = solr_response['response']['docs']
         if 'facet_counts' in solr_response:
+            #: Facets parsed as a dict.
             self.facets = parse_facets(solr_response['facet_counts'])
 
     def __repr__(self):
