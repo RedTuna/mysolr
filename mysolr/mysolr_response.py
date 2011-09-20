@@ -34,8 +34,9 @@ class SolrResponse(object):
         self.start = solr_response['response']['start']
         #: Documents list.
         self.documents = solr_response['response']['docs']
+        #: Facets parsed as a dict.
+        self.facets = None
         if 'facet_counts' in solr_response:
-            #: Facets parsed as a dict.
             self.facets = parse_facets(solr_response['facet_counts'])
 
     def __repr__(self):
