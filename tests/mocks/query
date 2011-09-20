@@ -1,0 +1,45 @@
+{
+  'responseHeader':{
+    'status':0,
+    'QTime':101,
+    'params':{
+      'facet':'true',
+      'indent':'on',
+      'start':'0',
+      'q':'genre_s:fantasy',
+      'facet.field':'author',
+      'wt':'python',
+      'rows':'10',
+      'version':'2.2'}},
+  'response':{'numFound':2,'start':0,'docs':[
+      {
+        'price':12.5,
+        'name':'The Lightning Thief',
+        'sequence_i':1,
+        'author':'Rick Riordan',
+        'inStock':True,
+        'series_t':'Percy Jackson and the Olympians',
+        'pages_i':384,
+        'genre_s':'fantasy',
+        'id':'978-0641723445',
+        'cat':['book','hardcover']},
+      {
+        'price':12.5,
+        'name':'The Lightning Thief',
+        'sequence_i':1,
+        'author':'Rick Riordan',
+        'inStock':True,
+        'series_t':'Percy Jackson and the Olympians',
+        'pages_i':384,
+        'genre_s':'fantasy',
+        'id':'978-0641723446',
+        'cat':['book','hardcover']}]
+  },
+  'facet_counts':{
+    'facet_queries':{},
+    'facet_fields':{
+      'author':[
+        'rick',2,
+        'riordan',2]},
+    'facet_dates':{},
+    'facet_ranges':{}}}
