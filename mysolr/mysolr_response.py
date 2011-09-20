@@ -38,6 +38,10 @@ class SolrResponse(object):
         self.facets = None
         if 'facet_counts' in solr_response:
             self.facets = parse_facets(solr_response['facet_counts'])
+        #: Shorcut to stats resuts
+        self.stats = None
+        if 'stats' in solr_response:
+            self.stats = solr_response['stats']['stats_fields']
 
     def __repr__(self):
         values = (self.status, self.qtime, self.total_results)

@@ -19,7 +19,7 @@ class StatsQueryTestCase(unittest.TestCase):
         pass
 
     def test_query(self):
-        pass
+        self.assertNotEqual(self.response.stats, None)
 
 
 if __name__ == '__main__':
