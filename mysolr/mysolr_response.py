@@ -24,6 +24,8 @@ class SolrResponse(object):
         """
         #: Solr full response.
         self.raw_response = solr_response
+        #: Solr query URL
+        self.url = None
         #: Response status.
         self.status = solr_response['responseHeader']['status']
         #: Query time.
