@@ -14,7 +14,7 @@ Basic Usage
 -----------
 .. raw:: html
 
-    <script src="https://gist.github.com/1217915.js?file=mysorl_gist"></script>
+    <script src="https://gist.github.com/1217915.js?file=mysolr_quickstart.py"></script>
 
 
 Related projects
