@@ -21,7 +21,7 @@ from mysolr_response import SolrResponse
 class Solr:
     """Acts as an easy-to-use interface to Solr."""
 
-    def __init__(self, base_url='http://localhost:8080/solr'):
+    def __init__(self, base_url='http://localhost:8080/solr/'):
         """ Initializes a Solr object. Solr URL is a needed parameter.
         """
         self.base_url = base_url
@@ -38,6 +38,9 @@ class Solr:
         """
         assert 'q' in kwargs
         kwargs['wt'] = 'python'
+        # base_url must be end with /
+        if self.base_url[-1] != '/':
+            self.base_url += '/'
         response = requests.get(urljoin(self.base_url, 'select'), params=kwargs)
         response.raise_for_status()
         response_object = eval(response.read())
