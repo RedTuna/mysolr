@@ -31,6 +31,7 @@ Contents
    :maxdepth: 2
 
    user/installation
+   user/userguide
    api/classes
 
 .. _solrpy: http://code.google.com/p/solrpy/
