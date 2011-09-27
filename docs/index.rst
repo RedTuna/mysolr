@@ -17,13 +17,6 @@ Basic Usage
     <script src="https://gist.github.com/1217915.js?file=mysolr_quickstart.py"></script>
 
 
-Related projects
-----------------
-
-* solrpy_
-* pysolr_
-* djangosolr_
-
 Contents
 --------
 
@@ -33,6 +26,15 @@ Contents
    user/installation
    user/userguide
    api/classes
+
+
+Related projects
+----------------
+
+* solrpy_
+* pysolr_
+* djangosolr_
+
 
 .. _solrpy: http://code.google.com/p/solrpy/
 .. _pysolr: https://github.com/toastdriven/pysolr/
