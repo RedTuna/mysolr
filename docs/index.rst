@@ -26,6 +26,14 @@ Contents
    user/userguide
    api/classes
 
+References
+----------
+
+We would like to thank the following developers their work and inspiration:
+
+* The Apache Solr_ 's committers_
+* Kenneth Reitz, Requests_ creator
+
 Related projects
 ----------------
 
@@ -39,3 +47,6 @@ Other Python projects Apache Solr related:
 .. _solrpy: http://code.google.com/p/solrpy/
 .. _pysolr: https://github.com/toastdriven/pysolr/
 .. _djangosolr: https://github.com/sophilabs/django-solr
+.. _Requests: http://docs.python-requests.org/
+.. _Solr: http://lucene.apache.org/solr/
+.. _committers: http://lucene.apache.org/java/docs/whoweare.html
