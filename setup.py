@@ -17,12 +17,12 @@ CLASSIFIERS = [
 
 
 setup(name='mysolr',
-      version='0.1',
+      version='0.2',
       description='Solr Python binding',
       long_description = open('README.rst').read(),
-      author='Rubén Abad',
-      author_email='ruabag@gmail.com',
-      url='http://github.com/rabad/mysolr',
+      author='Rubén Abad, Miguel Olivares',
+      author_email='ruabag@gmail.com, miguel@moliware.com',
+      url='http://mysolr.redtuna.org',
       packages=['mysolr'],
       install_requires=REQUIRED,
       classifiers=CLASSIFIERS)
