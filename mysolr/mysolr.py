@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
 mysolr.mysolr
@@ -9,14 +8,18 @@ operate with a Solr server.
 
 >>> from mysolr import Solr
 >>> solr = Solr('http://myserver:8080/solr')
->>> query_response = solr.search('q':'*:*', 'rows': 0, 'start': 0,
-                                'facet': 'true', 'facet.field': 'province')
+>>> query = {'q':'*:*', 'rows': 0, 'start': 0, 'facet': 'true', 
+             'facet.field': 'province'}
+>>> query_response = solr.search(**query)
 
 """
-import requests
-import json
-from urlparse import urljoin
 from mysolr_response import SolrResponse
+from urlparse import urljoin
+from xml.sax.saxutils import escape
+
+import json
+import requests
+
 
 class Solr:
     """Acts as an easy-to-use interface to Solr."""
@@ -52,7 +55,8 @@ class Solr:
         """Sends an update/add message to add the array of hashes(documents) to
         Solr.
 
-        :param documents: A list of solr-compatible documents to index.
+        :param documents: A list of solr-compatible documents to index. You
+                          should use unicode strings for text/string fields.
         :param input_type: The format which documents are sent. Remember that json
                            is not supported until version 3.
         :param commit: If True, sends a commit message after the operation is
@@ -169,8 +173,12 @@ def _get_add_xml(array_of_hash, overwrite=True):
         for key, value in doc_hash.items():
             if type(value) == type(list()):
                 for v in value:
+                    if isinstance(v, basestring):
+                        v = escape(v)
                     doc = '%s<field name="%s">%s</field>' % (doc, key, v)
             else:
+                if isinstance(value, basestring):
+                    value = escape(value)
                 doc = '%s<field name="%s">%s</field>' % (doc, key, value)
         doc = '%s</doc>' % (doc)
         xml = '%s%s' % (xml, doc)
