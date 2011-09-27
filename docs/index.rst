@@ -6,8 +6,8 @@
 Welcome to mysolr's documentation!
 ==================================
 
-Mysolr was born to be a fast and easy-to-use client for solr api and because 
-existing python clients don't fullfill this conditions.
+mysolr was born to be a fast and easy-to-use client for Apache Solr's API and because 
+existing Python clients didn't fulfill these conditions.
 
 
 Basic Usage
@@ -15,14 +15,6 @@ Basic Usage
 .. raw:: html
 
     <script src="https://gist.github.com/1217915.js?file=mysolr_quickstart.py"></script>
-
-
-Related projects
-----------------
-
-* solrpy_
-* pysolr_
-* djangosolr_
 
 Contents
 --------
@@ -33,6 +25,16 @@ Contents
    user/installation
    user/userguide
    api/classes
+
+Related projects
+----------------
+
+Other Python projects Apache Solr related:
+
+* solrpy_
+* pysolr_
+* djangosolr_
+
 
 .. _solrpy: http://code.google.com/p/solrpy/
 .. _pysolr: https://github.com/toastdriven/pysolr/
