@@ -29,7 +29,7 @@ class Solr:
         """
         self.base_url = base_url
 
-    def search(self, **kwargs):
+    def search(self, resource='select', **kwargs):
         """Queries Solr with the given kwargs and returns a SolrResponse
         object.
 
@@ -44,7 +44,7 @@ class Solr:
         # base_url must be end with /
         if self.base_url[-1] != '/':
             self.base_url += '/'
-        response = requests.get(urljoin(self.base_url, 'select'), params=kwargs)
+        response = requests.get(urljoin(self.base_url, resource), params=kwargs)
         response.raise_for_status()
         response_object = eval(response.read())
         solr_response = SolrResponse(response_object)
