@@ -44,6 +44,11 @@ class SolrResponse(object):
         self.stats = None
         if 'stats' in solr_response:
             self.stats = solr_response['stats']['stats_fields']
+        #: Spellcheck result parsed into a more readable object.
+        self.spellcheck = None
+        if 'spellcheck' in solr_response:
+            suggestions = solr_response['spellcheck']['suggestions']
+            self.spellcheck = parse_spellcheck(suggestions)
 
     def __repr__(self):
         values = (self.status, self.qtime, self.total_results)
@@ -59,4 +64,23 @@ def parse_facets(solr_facets):
             parsed = [tuple(facet[i:i+2]) for i in xrange(0, len(facet), 2)]
             facet_type_dict[name] = dict(parsed)
         result[facet_type] = facet_type_dict
+    return result
+
+
+def parse_spellcheck(solr_suggestions):
+    """ Parse spellcheck result into a more readable format. """
+    result = {}
+    suggestions = {}
+
+    for i in xrange(0, len(solr_suggestions), 2):
+        key = solr_suggestions[i]
+        value = solr_suggestions[i+1]
+        if isinstance(value, dict):
+            # it's a suggestion
+            suggestions[key] = value
+        else:
+            # it's information about spellchecking result
+            result[key] = value
+
+    result['suggestions'] = suggestions
     return result

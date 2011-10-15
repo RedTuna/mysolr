@@ -18,7 +18,7 @@ class SpellQueryTestCase(unittest.TestCase):
         pass
 
     def test_query(self):
-        self.assertNotEqual(self.response.stats, None)
+        self.assertNotEqual(self.response.spellcheck, None)
 
 
 if __name__ == '__main__':
