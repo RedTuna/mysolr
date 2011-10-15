@@ -33,6 +33,7 @@ class Solr:
         """Queries Solr with the given kwargs and returns a SolrResponse
         object.
 
+        :param resource: Request dispatcher. 'select' by default.
         :param **kwargs: Dictionary containing any of the available Solr query
                          parameters described in
                          http://wiki.apache.org/solr/CommonQueryParameters.
