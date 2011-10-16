@@ -1,0 +1,23 @@
+{
+  'responseHeader':{
+    'status':0,
+    'QTime':9,
+    'params':{
+      'hl.snippets':'2',
+      'indent':'on',
+      'start':'0',
+      'q':'de',
+      'hl.fl':'name',
+      'wt':'python',
+      'hl':'true',
+      'rows':'3',
+      'version':'2.2'}},
+  'response':{'numFound':1,'start':0,'docs':[
+      {
+        'id':'1',
+        'name':u'Nueve victorias y once poles, un pilotaje extremo indicativo de su perfecta armon\u00eda con la flamante HondaRC 212 V, y un dominio aplastante y absoluto en carrera han hecho de Casey Stoner un ser intratable este 2012. Tanto como para hacer de la categor\u00eda reina del mundial de motociclismo un campeonato aburrido tras las primeras pruebas y alzarse con su segundo cetro en MotoGP a falta a\u00fan de disputarse dos grandes premios. El aussie ha demostrado este a\u00f1o que, le den la moto que le den, es un as tras el manillar y que ser\u00e1 el principal rival a batir las pr\u00f3ximos temporadas.'}]
+  },
+  'highlighting':{
+    '1':{
+      'name':[u'Nueve victorias y once poles, un pilotaje extremo indicativo <em>de</em> su perfecta armon\u00eda con la flamante',
+        ' HondaRC 212 V, y un dominio aplastante y absoluto en carrera han hecho <em>de</em> Casey Stoner un ser intratable']}}}
