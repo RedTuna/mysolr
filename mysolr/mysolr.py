@@ -47,7 +47,7 @@ class Solr:
             self.base_url += '/'
         response = requests.get(urljoin(self.base_url, resource), params=kwargs)
         response.raise_for_status()
-        response_object = eval(response.read())
+        response_object = eval(response.content)
         solr_response = SolrResponse(response_object)
         solr_response.url = response.url
         return solr_response
