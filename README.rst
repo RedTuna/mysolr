@@ -1,7 +1,18 @@
 mysolr
 ======
 
-Fast python solr binding
+Fast python solr binding. Check full documentation here_
+
+
+Features
+--------
+
+* Full query syntax support
+* Facets support
+* Highlighting support
+* Spellchecker support
+* Stats support
+
 
 Instalation
 -----------
@@ -9,32 +20,31 @@ Instalation
 From source code: ::
 
   python setup.py install
-  
 
-Solr Configuration
-..................
+From pypi: ::
 
-To update Solr Index using JSON, a few lines must be added at Solr's **solrconfig.xml**: ::
-
-    <requestHandler name="/update/json" class="solr.JsonUpdateRequestHandler" startup="lazy" />
+  pip intall mysolr
 
 
 Usage
 -----
 
-Search
-......
+    from mysolr import Solr
 
-    >>> from mysolr import Solr
-    >>> solr = Solr()
-    >>> response = solr.search(q='*:*')
-    >>> response.status
-    0
-    >>> response.qtime
-    1
-    >>> response.start
-    0
-    >>> response.total_results
-    1394500
-    >>> response.documents
-    [{...},...]
+    # Default connection to localhost:8080
+    solr = Solr()
+
+    # All solr params are supported!
+    query = {'q' : '*:*', 'facet' : 'true', 'facet.field' : 'foo'}
+    response = solr.search(**query)
+
+    # do stuff with documents
+    for document in response.documents:
+        # modify field 'foo'
+        document['foo'] = 'bar'
+
+    # update index with modified documents
+    solr.update(response.documents, commit=True)
+
+
+.. _site: http://mysolr.redtuna.org
