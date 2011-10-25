@@ -28,6 +28,7 @@ From pypi: ::
 
 Usage
 -----
+::
 
   from mysolr import Solr
 
