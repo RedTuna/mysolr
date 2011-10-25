@@ -28,24 +28,23 @@ From pypi: ::
 
 Usage
 -----
-.. code-block:: python
 
-    from mysolr import Solr
+  from mysolr import Solr
 
-    # Default connection to localhost:8080
-    solr = Solr()
+  # Default connection to localhost:8080
+  solr = Solr()
 
-    # All solr params are supported!
-    query = {'q' : '*:*', 'facet' : 'true', 'facet.field' : 'foo'}
-    response = solr.search(**query)
+  # All solr params are supported!
+  query = {'q' : '*:*', 'facet' : 'true', 'facet.field' : 'foo'}
+  response = solr.search(**query)
 
-    # do stuff with documents
-    for document in response.documents:
-        # modify field 'foo'
-        document['foo'] = 'bar'
+  # do stuff with documents
+  for document in response.documents:
+      # modify field 'foo'
+      document['foo'] = 'bar'
 
-    # update index with modified documents
-    solr.update(response.documents, commit=True)
+  # update index with modified documents
+  solr.update(response.documents, commit=True)
 
 
 .. _here: http://mysolr.redtuna.org
