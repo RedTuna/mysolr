@@ -28,6 +28,7 @@ From pypi: ::
 
 Usage
 -----
+.. code-block:: python
 
     from mysolr import Solr
 
@@ -47,4 +48,4 @@ Usage
     solr.update(response.documents, commit=True)
 
 
-.. _site: http://mysolr.redtuna.org
+.. _here: http://mysolr.redtuna.org
