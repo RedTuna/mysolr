@@ -21,7 +21,7 @@ import json
 import requests
 
 
-class Solr:
+class Solr(object):
     """Acts as an easy-to-use interface to Solr."""
 
     def __init__(self, base_url='http://localhost:8080/solr/'):
