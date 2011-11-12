@@ -13,6 +13,11 @@ operate with a Solr server.
 >>> query_response = solr.search(**query)
 
 """
+try:
+    from requests import async
+except:
+    pass
+
 from mysolr_response import SolrResponse
 from urlparse import urljoin
 from xml.sax.saxutils import escape
@@ -28,6 +33,20 @@ class Solr(object):
         """ Initializes a Solr object. Solr URL is a needed parameter.
         """
         self.base_url = base_url
+        # base_url must be end with /
+        if self.base_url[-1] != '/':
+            self.base_url += '/'
+
+    def  __build_request(self, query):
+        """ Check solr query and put convenient format """
+        assert 'q' in query
+        query['wt'] = 'python'
+        return query
+
+    def __build_response(self, response):
+        """ Build a SolrResponse from http request made with requests. """
+        response_object = eval(response.content)
+        return SolrResponse(response_object)
 
     def search(self, resource='select', **kwargs):
         """Queries Solr with the given kwargs and returns a SolrResponse
@@ -40,17 +59,36 @@ class Solr(object):
                          'q' is a mandatory parameter.
 
         """
-        assert 'q' in kwargs
-        kwargs['wt'] = 'python'
-        # base_url must be end with /
-        if self.base_url[-1] != '/':
-            self.base_url += '/'
-        response = requests.get(urljoin(self.base_url, resource), params=kwargs)
+        query = self.__build_request(kwargs)
+        
+        response = requests.get(urljoin(self.base_url, resource), params=query)
         response.raise_for_status()
-        response_object = eval(response.content)
-        solr_response = SolrResponse(response_object)
+
+        solr_response = self.__build_response(response)
         solr_response.url = response.url
         return solr_response
+    
+    def async_search(self, queries, resource='select'):
+        """ Asynchronous search using async module from requests. 
+
+        :param queries:  List of queries. Each query is a dictionary containing
+                         any of the available Solr query parameters described in
+                         http://wiki.apache.org/solr/CommonQueryParameters.
+                         'q' is a mandatory parameter.
+        :param resource: Request dispatcher. 'select' by default.
+        """
+        url = urljoin(self.base_url, resource)
+
+        queries = map(self.__build_request, queries)
+
+        rs = []
+        try:
+            rs = [async.get(url, params=query) for query in queries]
+        except NameError:
+            raise RuntimeError('Gevent is required for Solr.async_search.')
+
+        return map(self.__build_response, async.map(rs))
+
 
     def update(self, documents, input_type='xml', commit=True):
         """Sends an update/add message to add the array of hashes(documents) to
