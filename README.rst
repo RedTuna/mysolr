@@ -12,6 +12,7 @@ Features
 * Highlighting support
 * Spellchecker support
 * Stats support
+* Parallel searchs
 
 
 Instalation
