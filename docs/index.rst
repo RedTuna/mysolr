@@ -12,9 +12,25 @@ existing Python clients didn't fulfill these conditions.
 
 Basic Usage
 -----------
-.. raw:: html
+::
 
-    <script src="https://gist.github.com/1217915.js?file=mysolr_quickstart.py"></script>
+    from mysolr import Solr
+
+    # Default connection to localhost:8080
+    solr = Solr()
+
+    # All solr params are supported!
+    query = {'q' : '*:*', 'facet' : 'true', 'facet.field' : 'foo'}
+    response = solr.search(**query)
+
+    # do stuff with documents
+    for document in response.documents:
+        # modify field 'foo'
+        document['foo'] = 'bar'
+
+    # update index with modified documents
+    solr.update(response.documents, commit=True)
+
 
 Contents
 --------
@@ -24,6 +40,7 @@ Contents
 
    user/installation
    user/userguide
+   user/recipes
    api/classes
 
 References
