@@ -90,7 +90,7 @@ class Solr(object):
         return map(self.__build_response, async.map(rs))
 
 
-    def update(self, documents, input_type='xml', commit=True):
+    def update(self, documents, input_type='json', commit=True):
         """Sends an update/add message to add the array of hashes(documents) to
         Solr.
 
