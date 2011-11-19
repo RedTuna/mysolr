@@ -6,6 +6,9 @@ User Guide
 
 Connecting to Solr
 ------------------
+
+Use mysolr.Solr object for connecting to a Solr instance.
+
 ::
 
     from mysolr import Solr
@@ -19,6 +22,9 @@ Connecting to Solr
 
 Queriying to Solr
 -----------------
+
+Making a query to Solr is very easy, just call search method with your query.
+
 ::
 
     from mysolr import Solr
@@ -29,7 +35,8 @@ Queriying to Solr
     # Get documents
     documents = response.documents
 
-::
+Besides all available Solr query params are supported. So making a query
+using facets was like this :: 
 
     from mysolr import Solr
 
@@ -41,6 +48,53 @@ Queriying to Solr
     documents = response.documents
     # Get facets
     facets = response.facets
+
+
+Facets
+------
+
+Facets are parsed and can be accessed by getting :attr:`~mysolr.SolrResponse.facets`
+attribute of the SolrResponse object. Facets look like this::
+
+    {
+        'facet_dates': {},
+        'facet_fields': {'foo': {'value1': 2, 'value2': 2}},
+        'facet_queries': {},
+        'facet_ranges': {}
+    }
+
+
+Highlighting
+------------
+
+Spellchecker
+------------
+
+Concurrent searchs
+------------------
+
+As mysolr is using requests, it is posible to make concurrent queries thank to
+requests.async ::
+
+    from mysolr import Solr
+    solr = Solr()
+    # queries
+    queries = [
+        {
+            'q' : '*:*'
+        },
+        {
+            'q' : 'foo:bar'
+        }
+    ]
+
+    # using 10 threads
+    responses = solr.async_search(queries, size=10)
+
+.. admonition:: Using concurrent searchs
+
+    It's needed Gevent module for using requests.async so if you need concurrent
+    searchs you have to install Gevent
 
 
 Indexing documents
