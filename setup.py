@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 
-REQUIRED = ['requests>=0.6.6']
+REQUIRED = ['requests>=0.8.1']
 CLASSIFIERS = [
     'Development Status :: 1 - Planning',
     'Intended Audience :: Developers',
