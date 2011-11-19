@@ -68,13 +68,14 @@ class Solr(object):
         solr_response.url = response.url
         return solr_response
     
-    def async_search(self, queries, resource='select'):
+    def async_search(self, queries, size=10, resource='select'):
         """ Asynchronous search using async module from requests. 
 
         :param queries:  List of queries. Each query is a dictionary containing
                          any of the available Solr query parameters described in
                          http://wiki.apache.org/solr/CommonQueryParameters.
                          'q' is a mandatory parameter.
+        :param size:     Size of threadpool
         :param resource: Request dispatcher. 'select' by default.
         """
         url = urljoin(self.base_url, resource)
@@ -87,7 +88,7 @@ class Solr(object):
         except NameError:
             raise RuntimeError('Gevent is required for Solr.async_search.')
 
-        return map(self.__build_response, async.map(rs))
+        return map(self.__build_response, async.map(rs, size=size))
 
 
     def update(self, documents, input_type='json', commit=True):
