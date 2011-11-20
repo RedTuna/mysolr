@@ -36,7 +36,22 @@ Making a query to Solr is very easy, just call search method with your query.
     documents = response.documents
 
 Besides all available Solr query params are supported. So making a query
-using facets was like this :: 
+using pagination would be like this ::
+
+    from mysolr import Solr
+
+    solr = Solr()
+
+    # Get 10 documents
+    response = solr.search(q='*:*', rows=10, start=0)
+
+
+Facets
+------
+
+This is a query an example using facets with mysolr.
+
+::
 
     from mysolr import Solr
 
@@ -49,10 +64,6 @@ using facets was like this ::
     # Get facets
     facets = response.facets
 
-
-Facets
-------
-
 Facets are parsed and can be accessed by getting :attr:`~mysolr.SolrResponse.facets`
 attribute of the SolrResponse object. Facets look like this::
 
@@ -64,11 +75,57 @@ attribute of the SolrResponse object. Facets look like this::
     }
 
 
+Spellchecker
+------------
+
+This is an example of a query that uses spellcheck component.
+
+::
+
+    from mysolr import Solr
+
+    solr = Solr()
+
+    # Spell check query
+    query = {
+        'q' : 'helo wold',
+        'spellcheck' : 'true',
+        'spellcheck.collate': 'true',
+        'spellcheck.build':'true'
+    }
+
+    response = solr.search(**query)
+
+
+Spellchecker result is parsed and can be accessed by getting 
+:attr:`~mysolr.SolrResponse.spellcheck` attribute of the SolrResponse object.::
+
+    {'collation': 'Hello world',
+    'correctlySpelled': False,
+    'suggestions': {
+                    'helo': {'endOffset': 4,
+                                 'numFound': 1,
+                                 'origFreq': 0,
+                                 'startOffset': 0,
+                                 'suggestion': [{'freq': 14,
+                                                 'word': 'hello'}]},
+                    'wold': {'endOffset': 9,
+                             'numFound': 1,
+                             'origFreq': 0,
+                             'startOffset': 5,
+                             'suggestion': [{'freq': 14, 'word': 'world'}]}}}
+
+Stats
+-----
+
+Stats result can be accesed by getting :attr:`~mysolr.SolrResponse.stats`
+
+
 Highlighting
 ------------
 
-Spellchecker
-------------
+Gighlighting result can be accesed by getting :attr:`~mysolr.SolrResponse.highlighting`
+
 
 Concurrent searchs
 ------------------
