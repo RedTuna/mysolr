@@ -35,7 +35,7 @@ Making a query to Solr is very easy, just call search method with your query.
     # Get documents
     documents = response.documents
 
-Besides all available Solr query params are supported. So making a query
+Besides, all available Solr query params are supported. So making a query
 using pagination would be like this ::
 
     from mysolr import Solr
@@ -118,13 +118,14 @@ Spellchecker result is parsed and can be accessed by getting
 Stats
 -----
 
-Stats result can be accesed by getting :attr:`~mysolr.SolrResponse.stats`
+:attr:`~mysolr.SolrResponse.stats` attribute is just a shorcut to stats result. So
+it is not parsed and has the format that Solr sends.
 
 
 Highlighting
 ------------
 
-Gighlighting result can be accesed by getting :attr:`~mysolr.SolrResponse.highlighting`
+Like stats :attr:`~mysolr.SolrResponse.highlighting` is just a shorcut.
 
 
 Concurrent searchs
