@@ -7,7 +7,7 @@ User Guide
 Connecting to Solr
 ------------------
 
-Use mysolr.Solr object for connecting to a Solr instance.
+Use mysolr.Solr object to connect to a Solr instance.
 
 ::
 
@@ -36,7 +36,7 @@ Making a query to Solr is very easy, just call search method with your query.
     documents = response.documents
 
 Besides, all available Solr query params are supported. So making a query
-using pagination would be like this ::
+using pagination would be as simple as ::
 
     from mysolr import Solr
 
@@ -49,7 +49,7 @@ using pagination would be like this ::
 Facets
 ------
 
-This is a query an example using facets with mysolr.
+This is a query example using facets with mysolr.
 
 ::
 
@@ -64,8 +64,8 @@ This is a query an example using facets with mysolr.
     # Get facets
     facets = response.facets
 
-Facets are parsed and can be accessed by getting :attr:`~mysolr.SolrResponse.facets`
-attribute of the SolrResponse object. Facets look like this::
+Facets are parsed and can be accessed by retrieving :attr:`~mysolr.SolrResponse.facets`
+attribute from the SolrResponse object. Facets look like this::
 
     {
         'facet_dates': {},
@@ -78,7 +78,7 @@ attribute of the SolrResponse object. Facets look like this::
 Spellchecker
 ------------
 
-This is an example of a query that uses spellcheck component.
+This is an example of a query that uses the spellcheck component.
 
 ::
 
@@ -97,8 +97,8 @@ This is an example of a query that uses spellcheck component.
     response = solr.search(**query)
 
 
-Spellchecker result is parsed and can be accessed by getting 
-:attr:`~mysolr.SolrResponse.spellcheck` attribute of the SolrResponse object.::
+Spellchecker results are parsed and can be accessed by getting the 
+:attr:`~mysolr.SolrResponse.spellcheck` attribute from the SolrResponse object.::
 
     {'collation': 'Hello world',
     'correctlySpelled': False,
@@ -118,20 +118,19 @@ Spellchecker result is parsed and can be accessed by getting
 Stats
 -----
 
-:attr:`~mysolr.SolrResponse.stats` attribute is just a shorcut to stats result. So
-it is not parsed and has the format that Solr sends.
+:attr:`~mysolr.SolrResponse.stats` attribute is just a shortcut to stats result. It is not parsed and has the format sent by Solr.
 
 
 Highlighting
 ------------
 
-Like stats :attr:`~mysolr.SolrResponse.highlighting` is just a shorcut.
+Like stats, :attr:`~mysolr.SolrResponse.highlighting` is just a shortcut.
 
 
 Concurrent searchs
 ------------------
 
-As mysolr is using requests, it is posible to make concurrent queries thank to
+As mysolr is using requests, it is posible to make concurrent queries thanks to
 requests.async ::
 
     from mysolr import Solr
@@ -151,8 +150,8 @@ requests.async ::
 
 .. admonition:: Using concurrent searchs
 
-    It's needed Gevent module for using requests.async so if you need concurrent
-    searchs you have to install Gevent
+    It's needed Gevent module in order to use requests.async, so if you need concurrent
+    searchs, you must install Gevent
 
 
 Indexing documents
