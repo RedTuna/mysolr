@@ -215,12 +215,12 @@ def _get_add_xml(array_of_hash, overwrite=True):
                 for v in value:
                     if isinstance(v, basestring):
                         v = escape(v)
-                    doc = '%s<field name="%s">%s</field>' % (doc, key, v)
+                    doc += '<field name="%s">%s</field>' % (key, v)
             else:
                 if isinstance(value, basestring):
                     value = escape(value)
-                doc = '%s<field name="%s">%s</field>' % (doc, key, value)
-        doc = '%s</doc>' % (doc)
-        xml = '%s%s' % (xml, doc)
-    xml = '%s</add>' % (xml)
+                doc += '<field name="%s">%s</field>' % (key, value)
+        doc += '</doc>'
+        xml += doc
+    xml += '</add>'
     return xml
