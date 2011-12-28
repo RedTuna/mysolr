@@ -42,6 +42,7 @@ Contents
    user/userguide
    user/recipes
    api/classes
+   user/benchmark
 
 References
 ----------
