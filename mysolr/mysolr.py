@@ -18,8 +18,8 @@ try:
 except:
     pass
 
-from mysolr_response import SolrResponse
-from urlparse import urljoin
+from .mysolr_response import SolrResponse
+from .compat import urljoin
 from xml.sax.saxutils import escape
 
 import json

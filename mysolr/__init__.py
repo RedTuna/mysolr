@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from mysolr_response import SolrResponse
-from mysolr import Solr
+from .mysolr_response import SolrResponse
+from .mysolr import Solr
 
 __title__ = 'mysolr'
 __version__ = '0.4.0'
