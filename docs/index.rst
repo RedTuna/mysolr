@@ -9,6 +9,8 @@ Welcome to mysolr's documentation!
 mysolr was born to be a fast and easy-to-use client for Apache Solr's API and because 
 existing Python clients didn't fulfill these conditions.
 
+Since version 0.5 mysolr supports Python 3 except concurrent search feature.
+
 
 Basic Usage
 -----------

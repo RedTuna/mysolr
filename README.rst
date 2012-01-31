@@ -13,6 +13,7 @@ Features
 * Spellchecker support
 * Stats support
 * Concurrent searchs
+* Python 3 compatible
 
 
 Instalation
