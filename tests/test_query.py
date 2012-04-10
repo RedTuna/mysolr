@@ -9,8 +9,9 @@ class QueryTestCase(unittest.TestCase):
 
     def setUp(self):
         mock_file = join(dirname(__file__), 'mocks/query')
-        mock = eval(open(mock_file).read())
-        self.solr_response = SolrResponse(mock)
+        with open(mock_file) as f:
+            mock = eval(f.read())
+            self.solr_response = SolrResponse(mock)
 
     def tearDown(self):
         pass

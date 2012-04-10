@@ -11,8 +11,9 @@ class HighlightingQueryTestCase(unittest.TestCase):
 
     def setUp(self):
         mock_file = join(dirname(__file__), 'mocks/highlightingquery')
-        mock = eval(open(mock_file).read())
-        self.response = SolrResponse(mock)
+        with open(mock_file) as f:
+            mock = eval(f.read())
+            self.response = SolrResponse(mock)
 
     def tearDown(self):
         pass

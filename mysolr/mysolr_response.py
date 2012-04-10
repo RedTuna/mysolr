@@ -56,16 +56,16 @@ class SolrResponse(object):
 
     def __repr__(self):
         values = (self.status, self.qtime, self.total_results)
-        return '<SolrResponse status=%d, qtime=%d, total_results=%d>' % values
+        return '<SolrResponse status=%d, qtime=%d, total_results=%d>' % values        
 
 
 def parse_facets(solr_facets):
     """ Parse facets."""
     result = {}
-    for facet_type, facets in solr_facets.iteritems():
+    for facet_type, facets in solr_facets.items():
         facet_type_dict = {}
-        for name, facet in facets.iteritems():
-            parsed = [tuple(facet[i:i+2]) for i in xrange(0, len(facet), 2)]
+        for name, facet in facets.items():
+            parsed = [tuple(facet[i:i+2]) for i in range(0, len(facet), 2)]
             facet_type_dict[name] = dict(parsed)
         result[facet_type] = facet_type_dict
     return result
@@ -76,7 +76,7 @@ def parse_spellcheck(solr_suggestions):
     result = {}
     suggestions = {}
 
-    for i in xrange(0, len(solr_suggestions), 2):
+    for i in range(0, len(solr_suggestions), 2):
         key = solr_suggestions[i]
         value = solr_suggestions[i+1]
         if isinstance(value, dict):
