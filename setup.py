@@ -2,14 +2,13 @@
 from distutils.core import setup
 
 
-REQUIRED = ['requests==0.10.1']
+REQUIRED = ['requests']
 CLASSIFIERS = [
     'Development Status :: 1 - Planning',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: BSD License',
     'Natural Language :: English',
     'Operating System :: OS Independent',
-    'Programming Language :: Python :: 2.6',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3.2',
     'Programming Language :: Python',
