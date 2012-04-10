@@ -43,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'mysolr'
-copyright = u'2011, Rubén Abad, Miguel Olivares'
+copyright = u'2011-2012, Rubén Abad, Miguel Olivares'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
