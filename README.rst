@@ -6,7 +6,7 @@ Fast python solr binding. Check full documentation here_
 Status
 ------
 
-..image:: https://secure.travis-ci.org/RedTuna/mysolr.png
+.. image:: https://secure.travis-ci.org/RedTuna/mysolr.png
 
 Features
 --------
