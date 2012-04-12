@@ -29,7 +29,7 @@ From source code: ::
 
 From pypi: ::
 
-  pip intall mysolr
+  pip install mysolr
 
 
 Usage
