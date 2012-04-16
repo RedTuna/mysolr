@@ -70,6 +70,8 @@ def parse_facets(solr_facets):
                 facet_type_dict[name] = dict(parsed)
             elif isinstance(facet, dict):
                 facet_type_dict[name] = facet
+            elif isinstance(facet, int):
+                facet_type_dict[name] = facet
         result[facet_type] = facet_type_dict
     return result
 
