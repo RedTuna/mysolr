@@ -23,6 +23,6 @@ def get_wt():
 def parse_response(content):
     if sys.version_info.major == 3 and sys.version_info.minor == 2:
         import json
-        return json.loads(content)
+        return json.loads(content.decode('utf-8'))
     else:
         return eval(content)
