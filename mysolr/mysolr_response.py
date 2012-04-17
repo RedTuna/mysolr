@@ -10,6 +10,7 @@ response.
 13
 
 """
+from collections import OrderedDict
 
 class SolrResponse(object):
     """ Parse solr response and make it accesible."""
@@ -66,9 +67,9 @@ def parse_facets(solr_facets):
         for name, facet in facets.items():
             if isinstance(facet, list):
                 parsed = [tuple(facet[i:i+2]) for i in range(0, len(facet), 2)]
-                facet_type_dict[name] = dict(parsed)
+                facet_type_dict[name] = OrderedDict(parsed)
             elif isinstance(facet, dict):
-                facet_type_dict[name] = facet
+                facet_type_dict[name] = OrderedDict(facet)
             elif isinstance(facet, int):
                 facet_type_dict[name] = facet
         result[facet_type] = facet_type_dict
