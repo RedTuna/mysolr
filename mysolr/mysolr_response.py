@@ -11,7 +11,6 @@ response.
 
 """
 
-
 class SolrResponse(object):
     """ Parse solr response and make it accesible."""
 

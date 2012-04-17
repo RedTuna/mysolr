@@ -19,12 +19,11 @@ except:
     pass
 
 from .mysolr_response import SolrResponse
-from .compat import urljoin
+from .compat import urljoin, get_wt, parse_response
 from xml.sax.saxutils import escape
 
 import json
 import requests
-
 
 class Solr(object):
     """Acts as an easy-to-use interface to Solr."""
@@ -40,12 +39,12 @@ class Solr(object):
     def  __build_request(self, query):
         """ Check solr query and put convenient format """
         assert 'q' in query
-        query['wt'] = 'python'
+        query['wt'] = get_wt()
         return query
 
     def __build_response(self, response):
         """ Build a SolrResponse from http request made with requests. """
-        response_object = eval(response.content)
+        response_object = parse_response(response.content)
         return SolrResponse(response_object)
 
     def search(self, resource='select', **kwargs):
