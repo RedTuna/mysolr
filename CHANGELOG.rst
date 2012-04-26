@@ -1,6 +1,12 @@
 Chages
 ======
 
+v 0.6
+-----
+- Bug fixes
+- Cursors
+- Use OrderedDict for facets
+
 v 0.5.1
 -------
  - Bug fixes
