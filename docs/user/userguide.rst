@@ -46,6 +46,26 @@ using pagination would be as simple as ::
     response = solr.search(q='*:*', rows=10, start=0)
 
 
+Cursors
+-------
+
+The typical concept of cursor in relational databases is also implemented in 
+mysolr.
+
+::
+
+    from mysolr import Solr
+
+    solr = Solr()
+
+    cursor = solr.search_cursor(q='*:*')
+
+    # Get all the documents
+    for response in cursor.fetch(100):
+        # Do stuff with the current 100 documents
+        pass
+
+
 Facets
 ------
 

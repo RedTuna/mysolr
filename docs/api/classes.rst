@@ -17,3 +17,9 @@ SolrResponse class
 .. autoclass:: SolrResponse
    :inherited-members:
 
+
+Cursor class
+------------
+
+.. autoclass:: Cursor
+   :inherited-members:
