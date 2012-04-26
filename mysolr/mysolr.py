@@ -36,17 +36,6 @@ class Solr(object):
         if self.base_url[-1] != '/':
             self.base_url += '/'
 
-    def  __build_request(self, query):
-        """ Check solr query and put convenient format """
-        assert 'q' in query
-        query['wt'] = get_wt()
-        return query
-
-    def __build_response(self, response):
-        """ Build a SolrResponse from http request made with requests. """
-        response_object = parse_response(response.content)
-        return SolrResponse(response_object)
-
     def search(self, resource='select', **kwargs):
         """Queries Solr with the given kwargs and returns a SolrResponse
         object.
@@ -58,14 +47,21 @@ class Solr(object):
                          'q' is a mandatory parameter.
 
         """
-        query = self.__build_request(kwargs)
+        query = build_request(kwargs)
         
         response = requests.get(urljoin(self.base_url, resource), params=query)
         response.raise_for_status()
 
-        solr_response = self.__build_response(response)
+        solr_response = build_response(response)
         solr_response.url = response.url
         return solr_response
+
+    def search_cursor(self, resource='select', **kwargs):
+        """ """
+        query = build_request(kwargs)
+        cursor = Cursor(urljoin(self.base_url, resource), query)
+
+        return cursor
     
     def async_search(self, queries, size=10, resource='select'):
         """ Asynchronous search using async module from requests. 
@@ -79,7 +75,7 @@ class Solr(object):
         """
         url = urljoin(self.base_url, resource)
 
-        queries = map(self.__build_request, queries)
+        queries = map(build_request, queries)
 
         rs = []
         try:
@@ -87,7 +83,7 @@ class Solr(object):
         except NameError:
             raise RuntimeError('Gevent is required for Solr.async_search.')
 
-        return map(self.__build_response, async.map(rs, size=size))
+        return map(build_response, async.map(rs, size=size))
 
 
     def update(self, documents, input_type='json', commit=True):
@@ -198,6 +194,46 @@ class Solr(object):
                                           'Content-Length': "%s" % len(json_data)})
         response.raise_for_status()
 
+
+class Cursor(object):
+    """ Implements the concept of cursor in relational databases """
+    def __init__(self, url, query):
+        """ Cursor initialization """
+        self.url = url
+        self.query = query
+
+    def fetch(self, rows=None):
+        """ Generator method that grabs all the documents in bulk sets of 
+        'rows' documents
+
+        :param rows: number of rows for each request
+        """
+        if rows:
+            self.query['rows'] = rows
+
+        if 'rows' not in self.query:
+            self.query['rows'] = 10
+
+        self.query['start'] = 0
+
+        response = requests.get(self.url, params=self.query)
+        response.raise_for_status()
+        solr_response = build_response(response)
+
+        while len(solr_response.documents) == self.query['rows']:
+            solr_response.url = response.url
+            yield solr_response
+
+            self.query['start'] += self.query['rows']
+
+            response = requests.get(self.url, params=self.query)
+            response.raise_for_status()
+            solr_response = build_response(response)
+
+        yield solr_response
+
+
+
 def _get_add_xml(array_of_hash, overwrite=True):
     """ Creates add XML message to send to Solr based on the array of hashes
     (documents) provided.
@@ -223,3 +259,16 @@ def _get_add_xml(array_of_hash, overwrite=True):
         xml += doc
     xml += '</add>'
     return xml
+
+
+def  build_request(query):
+    """ Check solr query and put convenient format """
+    assert 'q' in query
+    query['wt'] = get_wt()
+    return query
+
+
+def build_response(response):
+    """ Build a SolrResponse from http request made with requests. """
+    response_object = parse_response(response.content)
+    return SolrResponse(response_object)
