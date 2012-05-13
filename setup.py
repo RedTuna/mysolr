@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 
 REQUIRED = ['requests']
@@ -25,4 +28,6 @@ setup(name='mysolr',
       url='http://mysolr.redtuna.org',
       packages=['mysolr'],
       install_requires=REQUIRED,
+      tests_require=['unittest2'],
+      test_suite='unittest2.collector',
       classifiers=CLASSIFIERS)
