@@ -7,6 +7,7 @@ Status
 ------
 
 .. image:: https://secure.travis-ci.org/RedTuna/mysolr.png
+   :target: https://secure.travis-ci.org/RedTuna/mysolr
 
 Features
 --------
@@ -20,8 +21,8 @@ Features
 * Python 3 compatible
 
 
-Instalation
------------
+Installation
+------------
 
 From source code: ::
 
