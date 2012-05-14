@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
-from distutils.core import setup
+import sys
+
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
+
+TEST_REQUIRED = None
+if sys.version_info >= (3, ):
+    TEST_REQUIRED = ['unittest2py3k']
+elif sys.version_info >= (2, ):
+    TEST_REQUIRED = ['unittest2']
 
 
 REQUIRED = ['requests']
@@ -25,4 +37,6 @@ setup(name='mysolr',
       url='http://mysolr.redtuna.org',
       packages=['mysolr'],
       install_requires=REQUIRED,
+      tests_require=TEST_REQUIRED,
+      test_suite='unittest2.collector',
       classifiers=CLASSIFIERS)

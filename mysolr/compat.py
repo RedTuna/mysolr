@@ -9,9 +9,9 @@
 
 import sys
 
-if sys.version_info.major == 3:
+if sys.version_info >= (3, ):
     from urllib.parse import urljoin
-elif sys.version_info.major == 2:
+elif sys.version_info >= (2, ):
     from urlparse import urljoin
 
 def get_wt():

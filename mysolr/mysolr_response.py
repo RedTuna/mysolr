@@ -10,7 +10,10 @@ response.
 13
 
 """
-from collections import OrderedDict
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 class SolrResponse(object):
     """ Parse solr response and make it accesible."""
