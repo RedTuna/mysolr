@@ -170,6 +170,17 @@ class Solr(object):
         xml = '<rollback />'
         self._post_xml(xml)
 
+    def ping(self):
+        """ Ping solr server. """
+        url = urljoin(self.base_url, 'admin/ping')
+        try:
+            content = requests.get(url, params={'wt': 'json'}).content
+            response = json.loads(content)
+            return response['status'] == 'OK'
+        except:
+            pass
+        return False
+
     def _post_xml(self, xml):
         """ Sends the xml to Solr server.
 
