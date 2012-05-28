@@ -16,7 +16,7 @@ elif sys.version_info >= (2, ):
 
 REQUIRED = ['requests']
 CLASSIFIERS = [
-    'Development Status :: 1 - Planning',
+    'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: BSD License',
     'Natural Language :: English',
