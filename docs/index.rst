@@ -54,6 +54,11 @@ We would like to thank the following developers their work and inspiration:
 * The Apache Solr_ 's committers_
 * Kenneth Reitz, Requests_ creator
 
+Projects that are using mysolr
+------------------------------
+
+* solr_cli_ : Command line console for Apache Solr.
+
 Related projects
 ----------------
 
@@ -70,3 +75,4 @@ Other Python projects Apache Solr related:
 .. _Requests: http://docs.python-requests.org/
 .. _Solr: http://lucene.apache.org/solr/
 .. _committers: http://lucene.apache.org/java/docs/whoweare.html
+.. _solr_cli: http://github.com/moliware/solr_cli
