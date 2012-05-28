@@ -1,6 +1,12 @@
 Chages
 ======
 
+v 0.6.1
+-------
+- Ping command
+- Tox integration
+- Documentation updates
+
 v 0.6
 -----
 - Bug fixes
