@@ -181,6 +181,63 @@ class Solr(object):
             pass
         return False
 
+    def more_like_this(self, resource='mlt', text=None, **kwargs):
+        """Implements convenient access to Solr MoreLikeThis functionality  
+
+        Please, visit http://wiki.apache.org/solr/MoreLikeThis to learn more
+        about MLT configuration and common parameters.
+
+        There are two ways of using MLT in Solr:
+
+            - Using a previously configured RequestHandler:
+
+                You normally specify a query and the first matching document for 
+                that query is used to retrieve similar documents.
+
+                You can however specify a text instead of a query, and similar documents
+                to the text will be returned.
+
+                You must configure a MLT RequestHandler in your solrconfig.xml in
+                order to get advantage of this functionality.
+
+                Note that this method has a default resource name with value "mlt",
+                but if your RequestHandler has a different name you must specify it
+                    when calling the more_like_this method.
+
+                - Using the MLT Search Component:
+
+                    The resulting documents in this case will be those that match the
+                regular query, but the SolrResponse will have a "mlt" section where
+                similar documents for each result document will be given.
+
+        :param resource: Request dispatcher. 'ml' by default.
+        :param text: Text to use for similar documents retrieval. None by default.
+        :param **kwargs: Dictionary containing any of the available Solr query
+                         parameters described in
+                         http://wiki.apache.org/solr/CommonQueryParameters
+                         or MoreLikeThis Common parameters described in
+                         http://wiki.apache.org/solr/MoreLikeThis.
+                         'q' is a mandatory parameter in all cases except
+                         when using a MLT RequestHandler with a Text parameter.
+    
+        """
+        if text is not None: #RequestHandler with Content-Streamed Text
+            #we dont call build_query because 'q' is NOT mandatory in this case
+            kwargs['wt'] = get_wt()
+            headers = {'Content-type': 'text/json'}
+            response = requests.post(urljoin(self.base_url, resource), 
+                                    params=kwargs,
+                                    data=text,
+                                    headers=headers)
+            response.raise_for_status()
+            solr_response = build_response(response)
+            solr_response.url = response.url
+            return solr_response
+        else:
+            return self.search(resource=resource, **kwargs)
+
+
+
     def _post_xml(self, xml):
         """ Sends the xml to Solr server.
 

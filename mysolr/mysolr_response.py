@@ -56,6 +56,8 @@ class SolrResponse(object):
         self.highlighting = None
         if 'highlighting' in solr_response:
             self.highlighting = solr_response['highlighting']
+        if 'moreLikeThis' in solr_response:
+            self.mlt = solr_response['moreLikeThis']
 
     def __repr__(self):
         values = (self.status, self.qtime, self.total_results)
