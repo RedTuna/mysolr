@@ -16,6 +16,7 @@ Features
 * Facets support
 * Highlighting support
 * Spellchecker support
+* More like this support
 * Stats support
 * Concurrent searchs
 * Python 3 compatible
