@@ -18,8 +18,8 @@ try:
 except:
     pass
 
-from .mysolr_response import SolrResponse
-from .compat import urljoin, get_wt, parse_response
+from .response import SolrResponse
+from .compat import urljoin, get_wt
 from xml.sax.saxutils import escape
 
 import json
@@ -49,11 +49,9 @@ class Solr(object):
         """
         query = build_request(kwargs)
         
-        response = requests.get(urljoin(self.base_url, resource), params=query)
-        response.raise_for_status()
+        http_response = requests.get(urljoin(self.base_url, resource), params=query)
 
-        solr_response = build_response(response)
-        solr_response.url = response.url
+        solr_response = SolrResponse(http_response)
         return solr_response
 
     def search_cursor(self, resource='select', **kwargs):
@@ -83,7 +81,8 @@ class Solr(object):
         except NameError:
             raise RuntimeError('Gevent is required for Solr.async_search.')
 
-        return map(build_response, async.map(rs, size=size))
+        solr_responses = [SolrResponse(http_response) for http_response in async.map(rs, size=size)]
+        return solr_responses
 
 
     def update(self, documents, input_type='json', commit=True):
@@ -102,11 +101,13 @@ class Solr(object):
               #'The given type isn\'t correct. Valid types are "json" and "xml".')
 
         if input_type == 'xml':
-            self._post_xml(_get_add_xml(documents))
+            http_response = self._post_xml(_get_add_xml(documents))
         else:
-            self._post_json(json.dumps(documents))
+            http_response = self._post_json(json.dumps(documents))
         if commit:
             self.commit()
+        
+        return SolrResponse(http_response)
 
     def delete_by_key(self, identifier, commit=True):
         """Sends an ID delete message to Solr.
@@ -116,9 +117,10 @@ class Solr(object):
 
         """
         xml = '<delete><id>%s</id></delete>' % (identifier)
-        self._post_xml(xml)
+        http_response = self._post_xml(xml)
         if commit:
             self.commit()
+        return SolrResponse(http_response)
 
     def delete_by_query(self, query, commit=True):
         """Sends a query delete message to Solr.
@@ -128,9 +130,10 @@ class Solr(object):
 
         """
         xml = '<delete><query>%s</query></delete>' % (query)
-        self._post_xml(xml)
+        http_response = self._post_xml(xml)
         if commit:
             self.commit()
+        return SolrResponse(http_response)
 
     def commit(self, wait_flush=True,
                wait_searcher=True, expunge_deletes=False):
@@ -147,7 +150,8 @@ class Solr(object):
         xml = '<commit waitFlush="%s" waitSearcher="%s" expungeDeletes="%s" />' % ('true' if wait_flush else 'false',
                                                                                    'true' if wait_searcher else 'false',
                                                                                    'true' if expunge_deletes else 'false')
-        self._post_xml(xml)
+        http_response = self._post_xml(xml)
+        return SolrResponse(http_response)
 
     def optimize(self, wait_flush=True, wait_searcher=True, max_segments=1):
         """Sends an optimize message to Solr.
@@ -163,23 +167,28 @@ class Solr(object):
         xml = '<optimize waitFlush="%s" waitSearcher="%s" maxSegments="%s" />' % ('true' if wait_flush else 'false',
                                                                                   'true' if wait_searcher else 'false',
                                                                                   max_segments)
-        self._post_xml(xml)
+        http_response = self._post_xml(xml)
+        return SolrResponse(http_response)
 
     def rollback(self):
         """Sends a rollback message to Solr server."""
         xml = '<rollback />'
-        self._post_xml(xml)
+        http_response = self._post_xml(xml)
+        return SolrResponse(http_response)
 
     def ping(self):
-        """ Ping solr server. """
+        """ Ping call to solr server. """
         url = urljoin(self.base_url, 'admin/ping')
+        http_response = requests.get(url, params={'wt': 'json'})
+        return SolrResponse(http_response)
+
+    def is_up(self):
+        """Check if a Solr server is up using ping call"""
         try:
-            content = requests.get(url, params={'wt': 'json'}).content
-            response = json.loads(content)
-            return response['status'] == 'OK'
+            solr_response = self.ping()
         except:
-            pass
-        return False
+            return False
+        return solr_response.status == 200 and solr_response.solr_status == 0
 
     def more_like_this(self, resource='mlt', text=None, **kwargs):
         """Implements convenient access to Solr MoreLikeThis functionality  
@@ -225,13 +234,11 @@ class Solr(object):
             #we dont call build_query because 'q' is NOT mandatory in this case
             kwargs['wt'] = get_wt()
             headers = {'Content-type': 'text/json'}
-            response = requests.post(urljoin(self.base_url, resource), 
+            http_response = requests.post(urljoin(self.base_url, resource), 
                                     params=kwargs,
                                     data=text,
                                     headers=headers)
-            response.raise_for_status()
-            solr_response = build_response(response)
-            solr_response.url = response.url
+            solr_response = SolrResponse(http_response)
             return solr_response
         else:
             return self.search(resource=resource, **kwargs)
@@ -245,10 +252,10 @@ class Solr(object):
         """
         url = urljoin(self.base_url, 'update')
         xml_data = xml.encode('utf-8')
-        response = requests.post(url, data=xml_data,
+        http_response = requests.post(url, data=xml_data,
                                  headers={'Content-type': 'text/xml; charset=utf-8',
                                           'Content-Length': "%s" % len(xml_data)})
-        response.raise_for_status()
+        return http_response
 
     def _post_json(self, json_doc):
         """ Sends the json to Solr server.
@@ -257,10 +264,10 @@ class Solr(object):
         """
         url = urljoin(self.base_url, 'update/json')
         json_data = json_doc.encode('utf-8')
-        response = requests.post(url, data=json_data,
+        http_response = requests.post(url, data=json_data,
                                  headers={'Content-type': 'application/json; charset=utf-8',
                                           'Content-Length': "%s" % len(json_data)})
-        response.raise_for_status()
+        return http_response
 
 
 class Cursor(object):
@@ -284,19 +291,16 @@ class Cursor(object):
 
         self.query['start'] = 0
 
-        response = requests.get(self.url, params=self.query)
-        response.raise_for_status()
-        solr_response = build_response(response)
+        http_response = requests.get(self.url, params=self.query)
+        solr_response = SolrResponse(http_response)
 
         while len(solr_response.documents) == self.query['rows']:
-            solr_response.url = response.url
             yield solr_response
 
             self.query['start'] += self.query['rows']
 
-            response = requests.get(self.url, params=self.query)
-            response.raise_for_status()
-            solr_response = build_response(response)
+            http_response = requests.get(self.url, params=self.query)
+            solr_response = SolrResponse(http_response)
 
         yield solr_response
 
@@ -334,9 +338,3 @@ def  build_request(query):
     assert 'q' in query
     query['wt'] = get_wt()
     return query
-
-
-def build_response(response):
-    """ Build a SolrResponse from http request made with requests. """
-    response_object = parse_response(response.content)
-    return SolrResponse(response_object)
