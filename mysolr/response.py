@@ -36,6 +36,10 @@ class SolrResponse():
         :param http_response: `requests.Response` object
 
         """
+        self.headers = None
+        self.raw_response = None
+        self.url = None
+        self.status = None
         if http_response is not None:
             self.headers = http_response.headers
             self.raw_response = http_response.content
