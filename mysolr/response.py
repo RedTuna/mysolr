@@ -40,7 +40,7 @@ class SolrResponse():
         self.raw_response = None
         self.url = None
         self.status = None
-        if http_response is not None:
+        if http_response:
             self.headers = http_response.headers
             self.raw_response = http_response.content
             self.url = http_response.url
@@ -54,7 +54,8 @@ class SolrResponse():
             except:
                 self.structured_body = None
 
-            if self.structured_body is not None: #Solr responded with a Structured Results Response
+            #Solr responded with a Structured Results Response
+            if self.structured_body:
                 #: Response status from solr responseHeader.
                 self.solr_status = self.structured_body['responseHeader']['status']
                 #: Query time.
@@ -90,7 +91,8 @@ class SolrResponse():
                 if 'moreLikeThis' in self.structured_body:
                     self.mlt = self.structured_body['moreLikeThis']
                 self.message = None
-            else: #Solr responded with a unstructured HTML Body Response
+            else: 
+                #Solr responded with a unstructured HTML Body Response
                 #try to extract error message from html body if any:
                 self.message = self.extract_errmessage()
 
