@@ -40,7 +40,7 @@ class SolrResponse():
         self.raw_response = None
         self.url = None
         self.status = None
-        if http_response:
+        if http_response is not None:
             self.headers = http_response.headers
             self.raw_response = http_response.content
             self.url = http_response.url
@@ -54,8 +54,7 @@ class SolrResponse():
             except:
                 self.structured_body = None
 
-            #Solr responded with a Structured Results Response
-            if self.structured_body:
+            if self.structured_body is not None: #Solr responded with a Structured Results Response
                 #: Response status from solr responseHeader.
                 self.solr_status = self.structured_body['responseHeader']['status']
                 #: Query time.
@@ -73,7 +72,7 @@ class SolrResponse():
                 #: Facets parsed as a OrderedDict (Order matters).
                 self.facets = None
                 if 'facet_counts' in self.structured_body:
-                    self.facets = parse_facets(self.structured_body['facet_counts'])
+                    self.facets = self.parse_facets(self.structured_body['facet_counts'])
                 #: Shorcut to stats resuts
                 self.stats = None
                 if 'stats' in self.structured_body:
@@ -82,7 +81,7 @@ class SolrResponse():
                 self.spellcheck = None
                 if 'spellcheck' in self.structured_body:
                     suggestions = self.structured_body['spellcheck']['suggestions']
-                    self.spellcheck = parse_spellcheck(suggestions)
+                    self.spellcheck = self.parse_spellcheck(suggestions)
                 #: Shorcut to highlighting result
                 self.highlighting = None
                 if 'highlighting' in self.structured_body:
@@ -91,15 +90,14 @@ class SolrResponse():
                 if 'moreLikeThis' in self.structured_body:
                     self.mlt = self.structured_body['moreLikeThis']
                 self.message = None
-            else: 
-                #Solr responded with a unstructured HTML Body Response
+            else: #Solr responded with a unstructured HTML Body Response
                 #try to extract error message from html body if any:
                 self.message = self.extract_errmessage()
 
     def __repr__(self):
         return '<SolrResponse status=%d>' % self.status 
 
-    def parse_facets(solr_facets):
+    def parse_facets(self, solr_facets):
         """ Parse facets."""
         result = {}
         for facet_type, facets in solr_facets.items():
@@ -116,7 +114,7 @@ class SolrResponse():
         return result
 
 
-    def parse_spellcheck(solr_suggestions):
+    def parse_spellcheck(self, solr_suggestions):
         """ Parse spellcheck result into a more readable format. """
         result = {}
         suggestions = {}
