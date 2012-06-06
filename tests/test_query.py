@@ -4,24 +4,34 @@
 import unittest
 from mysolr import SolrResponse
 from os.path import join, dirname
+import requests
+import sys
+import json
 
 class QueryTestCase(unittest.TestCase):
 
     def setUp(self):
         mock_file = join(dirname(__file__), 'mocks/query')
         with open(mock_file) as f:
-            mock = eval(f.read())
-            self.solr_response = SolrResponse(mock)
+            raw_content = None
+            if sys.version_info.major == 3 and sys.version_info.minor == 2:
+                raw_content = json.dumps(eval(f.read())).encode('utf-8')
+            else:
+                raw_content = f.read()
+            self.solr_response = SolrResponse()
+            self.solr_response.raw_content = raw_content
+            self.solr_response.status = 200
+            self.solr_response.parse_content()
 
     def tearDown(self):
         pass
 
-    def test_raw_response(self):
-        self.assertIsNotNone(self.solr_response.raw_response)
+    def test_raw_content(self):
+        self.assertIsNotNone(self.solr_response.raw_content)
 
     def test_status(self):
-        self.assertIsNotNone(self.solr_response.status)
-        self.assertEqual(self.solr_response.status, 0)
+        self.assertIsNotNone(self.solr_response.solr_status)
+        self.assertEqual(self.solr_response.solr_status, 0)
 
     def test_qtime(self):
         self.assertIsNotNone(self.solr_response.qtime)

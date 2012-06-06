@@ -4,7 +4,9 @@ import unittest
 
 from mysolr import SolrResponse
 from os.path import join, dirname
-
+import requests
+import json
+import sys
 
 class HighlightingQueryTestCase(unittest.TestCase):
     """ """
@@ -12,8 +14,15 @@ class HighlightingQueryTestCase(unittest.TestCase):
     def setUp(self):
         mock_file = join(dirname(__file__), 'mocks/highlightingquery')
         with open(mock_file) as f:
-            mock = eval(f.read())
-            self.response = SolrResponse(mock)
+            raw_content = None
+            if sys.version_info.major == 3 and sys.version_info.minor == 2:
+                raw_content = json.dumps(eval(f.read())).encode('utf-8')
+            else:
+                raw_content = f.read()
+            self.response = SolrResponse()
+            self.response.raw_content = raw_content
+            self.response.status = 200
+            self.response.parse_content()
 
     def tearDown(self):
         pass
