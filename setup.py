@@ -15,12 +15,16 @@ elif sys.version_info >= (2, ):
 
 
 REQUIRED = ['requests']
+if sys.version_info < (2, 7, ):
+  REQUIRED.append('ordereddict')
+
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: BSD License',
     'Natural Language :: English',
     'Operating System :: OS Independent',
+    'Programming Language :: Python :: 2.6',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3.2',
     'Programming Language :: Python',
