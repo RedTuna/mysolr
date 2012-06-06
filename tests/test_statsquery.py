@@ -16,7 +16,7 @@ class StatsQueryTestCase(unittest.TestCase):
         mock_file = join(dirname(__file__), 'mocks/statsquery')
         with open(mock_file) as f:
             raw_content = None
-            if sys.version_info.major == 3 and sys.version_info.minor == 2:
+            if sys.version_info[0] == 3 and sys.version_info[1] == 2:
                 raw_content = json.dumps(eval(f.read())).encode('utf-8')
             else:
                 raw_content = f.read()
@@ -24,6 +24,7 @@ class StatsQueryTestCase(unittest.TestCase):
             self.response.raw_content = raw_content
             self.response.status = 200
             self.response.parse_content()
+
     def tearDown(self):
         pass
 
