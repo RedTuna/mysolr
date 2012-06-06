@@ -38,9 +38,9 @@ class SolrResponse(object):
         """
         self.headers = None
         self.url = None
-        self.status = None
+        self.status = 0
         self.raw_content = None
-        if http_response:
+        if http_response is not None:
             self.headers = http_response.headers
             self.raw_content = http_response.content
             self.url = http_response.url
