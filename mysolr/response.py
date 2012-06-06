@@ -24,7 +24,7 @@ try:
 except ImportError:
     from ordereddict import OrderedDict
 
-class SolrResponse():
+class SolrResponse(object):
     """Parse solr response and make it accesible."""
     def __init__(self, http_response=None):
         """ Initializes a SolrResponse object.
@@ -37,20 +37,20 @@ class SolrResponse():
 
         """
         self.headers = None
-        self.raw_response = None
         self.url = None
         self.status = None
-        if http_response is not None:
+        self.raw_content = None
+        if http_response:
             self.headers = http_response.headers
-            self.raw_response = http_response.content
+            self.raw_content = http_response.content
             self.url = http_response.url
             self.status = http_response.status_code
 
-        if self.raw_response:
+        if self.raw_content:
             #try to parse raw content to know if its a Structured results response 
             #or an unstructured HTML page (usually resulting from an error)
             try:
-                self.structured_body = parse_response(self.raw_response)
+                self.structured_body = parse_response(self.raw_content)
             except:
                 self.structured_body = None
 
@@ -139,7 +139,7 @@ class SolrResponse():
         """
         message = None
         try:
-            message = re.findall('<u>([^<]*)</u>', str(self.raw_response))[-1]
+            message = re.findall('<u>([^<]*)</u>', str(self.raw_content))[-1]
         except Exception as e:
             pass
         return message
