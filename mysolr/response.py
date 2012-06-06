@@ -46,9 +46,14 @@ class SolrResponse(object):
             self.url = http_response.url
             self.status = http_response.status_code
 
+        self.parse_content()
+
+    def parse_content(self):
+        """Tries to parse the raw content to know if its a structured results 
+        response or an unstructured HTML page (usually resulting from an error)
+
+        """
         if self.raw_content:
-            #try to parse raw content to know if its a Structured results response 
-            #or an unstructured HTML page (usually resulting from an error)
             try:
                 self.structured_body = parse_response(self.raw_content)
             except:
