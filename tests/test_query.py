@@ -27,30 +27,30 @@ class QueryTestCase(unittest.TestCase):
         pass
 
     def test_raw_content(self):
-        self.assertIsNotNone(self.solr_response.raw_content)
+        self.assertNotEqual(self.solr_response.raw_content, None)
 
     def test_status(self):
-        self.assertIsNotNone(self.solr_response.solr_status)
+        self.assertNotEqual(self.solr_response.solr_status, None)
         self.assertEqual(self.solr_response.solr_status, 0)
 
     def test_qtime(self):
-        self.assertIsNotNone(self.solr_response.qtime)
+        self.assertNotEqual(self.solr_response.qtime, None)
         self.assertEqual(self.solr_response.qtime, 101)
 
     def test_total_results(self):
-        self.assertIsNotNone(self.solr_response.total_results)
+        self.assertNotEqual(self.solr_response.total_results, None)
         self.assertEqual(self.solr_response.total_results, 2)
 
     def test_start(self):
-        self.assertIsNotNone(self.solr_response.start)
+        self.assertNotEqual(self.solr_response.start, None)
         self.assertEqual(self.solr_response.start, 0)
 
     def test_documents(self):
-        self.assertIsNotNone(self.solr_response.documents)
+        self.assertNotEqual(self.solr_response.documents, None)
         self.assertEqual(len(self.solr_response.documents), 2)
 
     def test_facets(self):
-        self.assertIsNotNone(self.solr_response.facets)
+        self.assertNotEqual(self.solr_response.facets, None)
 
 if __name__ == '__main__':
     unittest.main()
