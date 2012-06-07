@@ -1,6 +1,13 @@
 Chages
 ======
 
+v 0.7
+------
+- mlt support
+- Python 2.6 support
+- New SolrResponse object that handles exceptions better
+- New theme for the documentation
+
 v 0.6.1
 -------
 - Ping command
