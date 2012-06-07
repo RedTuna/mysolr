@@ -198,26 +198,21 @@ class Solr(object):
 
         There are two ways of using MLT in Solr:
 
-            - Using a previously configured RequestHandler:
+        Using a previously configured RequestHandler
+            You normally specify a query and the first matching document for 
+            that query is used to retrieve similar documents.
+            You can however specify a text instead of a query, and similar documents
+            to the text will be returned.
+            You must configure a MLT RequestHandler in your solrconfig.xml in
+            order to get advantage of this functionality.
+            Note that this method has a default resource name with value "mlt",
+            but if your RequestHandler has a different name you must specify it
+            when calling the more_like_this method.
 
-                You normally specify a query and the first matching document for 
-                that query is used to retrieve similar documents.
-
-                You can however specify a text instead of a query, and similar documents
-                to the text will be returned.
-
-                You must configure a MLT RequestHandler in your solrconfig.xml in
-                order to get advantage of this functionality.
-
-                Note that this method has a default resource name with value "mlt",
-                but if your RequestHandler has a different name you must specify it
-                    when calling the more_like_this method.
-
-                - Using the MLT Search Component:
-
-                    The resulting documents in this case will be those that match the
-                regular query, but the SolrResponse will have a "mlt" section where
-                similar documents for each result document will be given.
+        Using the MLT Search Component:
+            The resulting documents in this case will be those that match the
+            regular query, but the SolrResponse will have a "mlt" section where
+            similar documents for each result document will be given.
 
         :param resource: Request dispatcher. 'ml' by default.
         :param text: Text to use for similar documents retrieval. None by default.
