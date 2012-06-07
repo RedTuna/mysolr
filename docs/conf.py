@@ -223,4 +223,4 @@ man_pages = [
 
 sys.path.append(os.path.abspath('_themes'))
 html_theme_path = ['_themes']
-html_theme = 'ra'
+html_theme = 'mysolr'
