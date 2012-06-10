@@ -55,47 +55,49 @@ class SolrResponse(object):
         """
         if self.raw_content:
             try:
-                self.structured_body = parse_response(self.raw_content)
+                self.raw_content = parse_response(self.raw_content)
             except:
-                self.structured_body = None
+                self.raw_content = None
 
-            if self.structured_body is not None: #Solr responded with a Structured Results Response
+            #Solr responded with a Structured Results Response
+            if self.raw_content is not None:
                 #: Response status from solr responseHeader.
-                self.solr_status = self.structured_body['responseHeader']['status']
+                self.solr_status = self.raw_content['responseHeader']['status']
                 #: Query time.
-                self.qtime = self.structured_body['responseHeader']['QTime']
+                self.qtime = self.raw_content['responseHeader']['QTime']
                 self.total_results = None
                 self.start = None
                 self.documents = None
-                if 'response' in self.structured_body:
+                if 'response' in self.raw_content:
                     #: Number of results.
-                    self.total_results = self.structured_body['response']['numFound']
+                    self.total_results = self.raw_content['response']['numFound']
                     #: Offset.
-                    self.start = self.structured_body['response']['start']
+                    self.start = self.raw_content['response']['start']
                     #: Documents list.
-                    self.documents = self.structured_body['response']['docs']
+                    self.documents = self.raw_content['response']['docs']
                 #: Facets parsed as a OrderedDict (Order matters).
                 self.facets = None
-                if 'facet_counts' in self.structured_body:
-                    self.facets = self.parse_facets(self.structured_body['facet_counts'])
+                if 'facet_counts' in self.raw_content:
+                    self.facets = self.parse_facets(self.raw_content['facet_counts'])
                 #: Shorcut to stats resuts
                 self.stats = None
-                if 'stats' in self.structured_body:
-                    self.stats = self.structured_body['stats']['stats_fields']
+                if 'stats' in self.raw_content:
+                    self.stats = self.raw_content['stats']['stats_fields']
                 #: Spellcheck result parsed into a more readable object.
                 self.spellcheck = None
-                if 'spellcheck' in self.structured_body:
-                    suggestions = self.structured_body['spellcheck']['suggestions']
+                if 'spellcheck' in self.raw_content:
+                    suggestions = self.raw_content['spellcheck']['suggestions']
                     self.spellcheck = self.parse_spellcheck(suggestions)
                 #: Shorcut to highlighting result
                 self.highlighting = None
-                if 'highlighting' in self.structured_body:
-                    self.highlighting = self.structured_body['highlighting']
+                if 'highlighting' in self.raw_content:
+                    self.highlighting = self.raw_content['highlighting']
                 self.mlt = None
-                if 'moreLikeThis' in self.structured_body:
-                    self.mlt = self.structured_body['moreLikeThis']
+                if 'moreLikeThis' in self.raw_content:
+                    self.mlt = self.raw_content['moreLikeThis']
                 self.message = None
-            else: #Solr responded with a unstructured HTML Body Response
+            #Solr responded with a unstructured HTML Body Response
+            else:
                 #try to extract error message from html body if any:
                 self.message = self.extract_errmessage()
 
