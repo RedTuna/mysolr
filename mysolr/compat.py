@@ -26,8 +26,3 @@ def parse_response(content):
         return json.loads(content.decode('utf-8'))
     else:
         return eval(content)
-
-def compat_params(query):
-    for (key, value) in query.items():
-        if isinstance(value, bool):
-            query[key] = str(value).lower()
