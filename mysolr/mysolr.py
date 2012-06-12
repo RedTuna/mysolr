@@ -19,7 +19,7 @@ except:
     pass
 
 from .response import SolrResponse
-from .compat import urljoin, get_wt
+from .compat import urljoin, get_wt, compat_args
 from xml.sax.saxutils import escape
 
 import json
@@ -331,5 +331,6 @@ def _get_add_xml(array_of_hash, overwrite=True):
 def  build_request(query):
     """ Check solr query and put convenient format """
     assert 'q' in query
+    compat_args(query)
     query['wt'] = get_wt()
     return query
