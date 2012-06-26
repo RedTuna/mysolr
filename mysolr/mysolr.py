@@ -29,7 +29,12 @@ class Solr(object):
     """Acts as an easy-to-use interface to Solr."""
 
     def __init__(self, base_url='http://localhost:8080/solr/', auth=None):
-        """ Initializes a Solr object. Solr URL is a needed parameter."""
+        """ Initializes a Solr object. Solr URL is a needed parameter.
+
+        :param base_url: Url to solr index
+        :param auth: Described in requests documentation:
+                     http://docs.python-requests.org/en/latest/user/quickstart/#basic-authentication 
+        """
         self.base_url = base_url
         # base_url must be end with /
         if self.base_url[-1] != '/':

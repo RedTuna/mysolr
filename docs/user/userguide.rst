@@ -19,6 +19,18 @@ Use mysolr.Solr object to connect to a Solr instance.
     # Custom connection
     solr = Solr('http://foo.bar:9090/solr/')
 
+If the server is secured with HTTP basic authentication you can connect by 
+using auth parameter.
+
+::
+
+    from mysolr import Solr
+
+    solr = Solr(auth=('admin', 'admin'))
+
+
+Further information about auth parameter in requests docs_
+
 
 Queriying to Solr
 -----------------
@@ -196,3 +208,5 @@ Indexing documents
 
     # Manual commit
     solr.commit()
+
+.. _docs: http://docs.python-requests.org/en/latest/user/quickstart/#basic-authentication
