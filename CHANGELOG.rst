@@ -1,6 +1,12 @@
 Chages
 ======
 
+v 0.7.1
+-------
+- methods for retrieving solrconfig.xml and schema.xml
+- HTTP Basic Auth and Digest Auth support
+- Bug fixes
+
 v 0.7
 ------
 - mlt support

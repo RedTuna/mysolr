@@ -33,7 +33,7 @@ CLASSIFIERS = [
 
 
 setup(name='mysolr',
-      version='0.7',
+      version='0.7.1',
       description='Solr Python binding',
       long_description = open('README.rst').read(),
       author='Rubén Abad, Miguel Olivares',
