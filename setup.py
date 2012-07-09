@@ -14,7 +14,7 @@ elif sys.version_info >= (2, ):
     TEST_REQUIRED = ['unittest2']
 
 
-REQUIRED = ['requests']
+REQUIRED = ['requests==0.12.1']
 if sys.version_info < (2, 7, ):
   REQUIRED.append('ordereddict')
 
