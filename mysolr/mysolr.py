@@ -196,6 +196,12 @@ class Solr(object):
             return False
         return solr_response.status == 200 and solr_response.solr_status == 0
 
+    def schema(self):
+        return self._get_file('schema.xml')
+
+    def solrconfig(self):
+        return self._get_file('solrconfig.xml')
+
     def more_like_this(self, resource='mlt', text=None, **kwargs):
         """Implements convenient access to Solr MoreLikeThis functionality  
 
@@ -245,8 +251,6 @@ class Solr(object):
         else:
             return self.search(resource=resource, **kwargs)
 
-
-
     def _post_xml(self, xml):
         """ Sends the xml to Solr server.
 
@@ -276,6 +280,16 @@ class Solr(object):
         http_response = requests.post(url, data=json_data,
                                       headers=headers, auth=self.auth)
         return http_response
+
+    def _get_file(self, filename):
+        """Retrieves config files of the current index."""
+        url = urljoin(self.base_url, 'admin/file')
+        params = {
+            'contentType': 'text/xml;charset=utf-8',
+            'file' : filename
+        }
+        http_response = requests.get(url, params=params, auth=self.auth)
+        return http_response.content
 
 
 class Cursor(object):
