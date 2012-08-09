@@ -7,7 +7,7 @@
         <a class="brand" href="{{ pathto('index') }}">{{ project }}</a>
         <div class="btn-group pull-right">
 {%- if theme_github %}
-        <iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user={{ theme_github[:theme_github.find('/')] }}&repo={{ theme_github[theme_github.find('/') + 1:] }}&type=watch&count=true&size=large"
+        <iframe src="http://ghbtns.com/github-btn.html?user={{ theme_github[:theme_github.find('/')] }}&repo={{ theme_github[theme_github.find('/') + 1:] }}&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
     {% endif %}
         </div>
