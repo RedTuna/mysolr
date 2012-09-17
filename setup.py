@@ -7,16 +7,15 @@ except ImportError:
     from distutils.core import setup
 
 
-TEST_REQUIRED = None
+REQUIRED = []
+
 if sys.version_info >= (3, ):
-    TEST_REQUIRED = ['unittest2py3k']
-elif sys.version_info >= (2, ):
-    TEST_REQUIRED = ['unittest2']
+    REQUIRED.append('requests==0.12.1')
+else:
+    REQUIRED.append('requests>=0.12.1')
 
-
-REQUIRED = ['requests==0.12.1']
 if sys.version_info < (2, 7, ):
-  REQUIRED.append('ordereddict')
+    REQUIRED.append('ordereddict')
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
@@ -41,6 +40,8 @@ setup(name='mysolr',
       url='http://mysolr.redtuna.org',
       packages=['mysolr'],
       install_requires=REQUIRED,
-      tests_require=TEST_REQUIRED,
-      test_suite='unittest2.collector',
+      extras_require={
+          'async': ['Gevent', 'grequest']
+      },
+      test_suite='tests',
       classifiers=CLASSIFIERS)

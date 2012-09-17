@@ -13,11 +13,6 @@ operate with a Solr server.
 >>> query_response = solr.search(**query)
 
 """
-try:
-    from requests import async
-except:
-    pass
-
 from .response import SolrResponse
 from .compat import urljoin, get_wt, compat_args
 from xml.sax.saxutils import escape
@@ -77,18 +72,16 @@ class Solr(object):
         :param size:     Size of threadpool
         :param resource: Request dispatcher. 'select' by default.
         """
-        url = urljoin(self.base_url, resource)
-
-        queries = map(build_request, queries)
-
-        rs = []
         try:
-            rs = [async.get(url, params=query) for query in queries]
-        except NameError:
-            raise RuntimeError('Gevent is required for Solr.async_search.')
+            import grequests
+        except:
+            raise RuntimeError('grequests is required for Solr.async_search.')
 
-        solr_responses = [SolrResponse(http_response) for http_response in async.map(rs, size=size)]
-        return solr_responses
+        url = urljoin(self.base_url, resource)
+        queries = map(build_request, queries)
+        rs = (grequests.get(url, params=query) for query in queries)
+        responses = grequests.map(rs, size=size)
+        return [SolrResponse(http_response) for http_response in responses]
 
 
     def update(self, documents, input_type='json', commit=True):
