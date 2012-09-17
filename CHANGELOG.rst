@@ -1,6 +1,11 @@
 Chages
 ======
 
+v 0.7.2
+-------
+- Using requests last version
+
+
 v 0.7.1
 -------
 - methods for retrieving solrconfig.xml and schema.xml
