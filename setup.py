@@ -40,7 +40,7 @@ setup(name='mysolr',
       url='http://mysolr.redtuna.org',
       packages=['mysolr'],
       install_requires=REQUIRED,
-      extras_requires={
+      extras_require={
           'async': ['Gevent', 'grequest']
       },
       test_suite='tests',
