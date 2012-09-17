@@ -7,9 +7,15 @@ except ImportError:
     from distutils.core import setup
 
 
-REQUIRED = ['requests==0.12.1']
+REQUIRED = []
+
+if sys.version_info >= (3, ):
+    REQUIRED.append('requests==0.12.1')
+else:
+    REQUIRED.append('requests>=0.12.1')
+
 if sys.version_info < (2, 7, ):
-  REQUIRED.append('ordereddict')
+    REQUIRED.append('ordereddict')
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
