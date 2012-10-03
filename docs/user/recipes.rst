@@ -14,10 +14,8 @@ How to copy all documents from one solr server to another. ::
     solr_source = Solr('http://server1:8080/solr/')
     solr_target = Solr('http://server2:8080/solr/')
 
-    # Get the number of documents of the source index
-    n_documents = solr_source.search(q='*:*', rows=0).total_results
+    cursor = solr_source.search_cursor(q='*:*')
 
-    for start in range(0, n_documents, PACKET_SIZE):
-        resp = solr_source.search(q='*:*', rows=PACKET_SIZE, start=start)
+    for resp in cursor.fetch(PACKET_SIZE):
         source_docs = resp.documents
         solr_target.update(source_docs)
