@@ -57,6 +57,27 @@ using pagination would be as simple as ::
     # Get 10 documents
     response = solr.search(q='*:*', rows=10, start=0)
 
+Some parameters contain a period. In those cases you have to use a dictionary to
+build the query::
+
+    from mysolr import Solr
+
+    solr = Solr()
+
+    query = {'q' : '*:*', 'facet' : 'true', 'facet.field' : 'foo'}
+    response = solr.search(**query)
+
+
+Sometimes specifying a HTTP parameter multiple times is needed. For instance
+when faceting by several fields. Use a list in that case.::
+
+    from mysolr import Solr
+
+    solr = Solr()
+
+    query = {'q' : '*:*', 'facet' : 'true', 'facet.field' : ['foo', 'bar']}
+    response = solr.search(**query)
+
 
 Cursors
 -------
@@ -101,10 +122,16 @@ attribute from the SolrResponse object. Facets look like this::
 
     {
         'facet_dates': {},
-        'facet_fields': {'foo': {'value1': 2, 'value2': 2}},
+        'facet_fields': {'foo': OrderedDict[('value1', 2), ('value2', 2)]},
         'facet_queries': {},
         'facet_ranges': {}
     }
+
+Ordered dicts are used to store the facets because order matters.
+
+In any case, if you don't like how facets are parsed you can use 
+:attr:`~mysolr.SolrResponse.raw_content` attribute which contains the raw
+response from solr.
 
 
 Spellchecker
@@ -150,7 +177,8 @@ Spellchecker results are parsed and can be accessed by getting the
 Stats
 -----
 
-:attr:`~mysolr.SolrResponse.stats` attribute is just a shortcut to stats result. It is not parsed and has the format sent by Solr.
+:attr:`~mysolr.SolrResponse.stats` attribute is just a shortcut to stats result.
+It is not parsed and has the format sent by Solr.
 
 
 Highlighting
@@ -163,7 +191,7 @@ Concurrent searchs
 ------------------
 
 As mysolr is using requests, it is posible to make concurrent queries thanks to
-requests.async ::
+grequest ::
 
     from mysolr import Solr
     solr = Solr()
@@ -180,10 +208,8 @@ requests.async ::
     # using 10 threads
     responses = solr.async_search(queries, size=10)
 
-.. admonition:: Using concurrent searchs
-
-    It's needed Gevent module in order to use requests.async, so if you need concurrent
-    searchs, you must install Gevent
+See :ref:`installation <installation>` section for further information about how
+to install this feature.
 
 
 Indexing documents
