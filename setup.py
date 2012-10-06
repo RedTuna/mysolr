@@ -41,7 +41,7 @@ setup(name='mysolr',
       packages=['mysolr'],
       install_requires=REQUIRED,
       extras_require={
-          'async': ['Gevent', 'grequest']
+          'async': ['Gevent', 'grequests']
       },
       test_suite='tests',
       classifiers=CLASSIFIERS)
