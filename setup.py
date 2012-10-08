@@ -10,7 +10,7 @@ except ImportError:
 REQUIRED = []
 
 if sys.version_info >= (3, ):
-    REQUIRED.append('requests==0.12.1')
+    REQUIRED.append('requests>=0.14.1')
 else:
     REQUIRED.append('requests>=0.12.1')
 
