@@ -1,6 +1,12 @@
 Chages
 ======
 
+v 0.7.3
+-------
+- Python 3.3 suppord
+- Documentation updates
+
+
 v 0.7.2
 -------
 - Using requests last version
