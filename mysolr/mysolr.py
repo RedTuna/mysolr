@@ -176,9 +176,13 @@ class Solr(object):
         :param max_segments: Optimizes down to at most this number of segments (default is 1)
 
         """
-        xml = '<optimize waitFlush="%s" waitSearcher="%s" maxSegments="%s" />' % ('true' if wait_flush else 'false',
-                                                                                  'true' if wait_searcher else 'false',
-                                                                                  max_segments)
+        xml = '<optimize '
+        if self.version < 4:
+            xml += 'waitFlush="%s" ' % str(wait_flush).lower()
+        xml += 'waitSearcher="%s" ' % str(wait_searcher).lower()
+        xml += 'maxSegments="%s" ' % max_segments
+        xml += '/>'
+
         http_response = self._post_xml(xml)
         return SolrResponse(http_response)
 
