@@ -307,20 +307,16 @@ class Cursor(object):
 
         self.query['start'] = 0
 
-        http_response = requests.get(self.url, params=self.query, auth=self.auth)
-        solr_response = SolrResponse(http_response)
-
-        while len(solr_response.documents) == self.query['rows']:
-            yield solr_response
-
-            self.query['start'] += self.query['rows']
-
-            http_response = requests.get(self.url, params=self.query,
-                                         auth=self.auth)
+        end = False
+        docs_retrieved = 0
+        while not end:
+            http_response = requests.get(self.url, params=self.query, auth=self.auth)
             solr_response = SolrResponse(http_response)
-
-        yield solr_response
-
+            yield solr_response
+            total_results = solr_response.total_results
+            docs_retrieved += len(solr_response.documents)
+            end = docs_retrieved == total_results
+            self.query['start'] += self.query['rows']
 
 
 def _get_add_xml(array_of_hash, overwrite=True):
