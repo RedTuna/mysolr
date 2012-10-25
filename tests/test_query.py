@@ -1,56 +1,39 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import unittest
-from mysolr import SolrResponse
-from os.path import join, dirname
-import requests
-import sys
-import json
+from mysolr import Solr
 
-class QueryTestCase(unittest.TestCase):
+
+class QueryResultTestCase(unittest.TestCase):
 
     def setUp(self):
-        mock_file = join(dirname(__file__), 'mocks/query')
-        with open(mock_file) as f:
-            raw_content = None
-            if sys.version_info[0] == 3 and sys.version_info[1] == 2:
-                raw_content = json.dumps(eval(f.read())).encode('utf-8')
-            else:
-                raw_content = f.read()
-            self.solr_response = SolrResponse()
-            self.solr_response.raw_content = raw_content
-            self.solr_response.status = 200
-            self.solr_response.parse_content()
+        self.solr = Solr('http://localhost:8983/solr')
+
+    def test_search(self):
+        response = self.solr.search(q='*:*')
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.total_results, 4)
+        self.assertEqual(len(response.documents), 4)
+
+    def test_search_cursor(self):
+        cursor = self.solr.search_cursor(q='*:*')
+        i = 0
+        for response in cursor.fetch(1):
+            self.assertEqual(response.status, 200)
+            i += 1
+        self.assertEqual(i, 4)
+
+        cursor = self.solr.search_cursor(q='*:*')
+        i = 0
+        for response in cursor.fetch(4):
+            self.assertEqual(response.status, 200)
+            i += 1
+        self.assertEqual(i, 1)
 
     def tearDown(self):
         pass
 
-    def test_raw_content(self):
-        self.assertNotEqual(self.solr_response.raw_content, None)
-
-    def test_status(self):
-        self.assertNotEqual(self.solr_response.solr_status, None)
-        self.assertEqual(self.solr_response.solr_status, 0)
-
-    def test_qtime(self):
-        self.assertNotEqual(self.solr_response.qtime, None)
-        self.assertEqual(self.solr_response.qtime, 101)
-
-    def test_total_results(self):
-        self.assertNotEqual(self.solr_response.total_results, None)
-        self.assertEqual(self.solr_response.total_results, 2)
-
-    def test_start(self):
-        self.assertNotEqual(self.solr_response.start, None)
-        self.assertEqual(self.solr_response.start, 0)
-
-    def test_documents(self):
-        self.assertNotEqual(self.solr_response.documents, None)
-        self.assertEqual(len(self.solr_response.documents), 2)
-
-    def test_facets(self):
-        self.assertNotEqual(self.solr_response.facets, None)
+    def test_query(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()
