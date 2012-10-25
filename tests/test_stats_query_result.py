@@ -8,11 +8,12 @@ import requests
 import sys
 import json
 
-class SpellQueryTestCase(unittest.TestCase):
+
+class StatsQueryResultTestCase(unittest.TestCase):
     """ """
 
     def setUp(self):
-        mock_file = join(dirname(__file__), 'mocks/spellquery')
+        mock_file = join(dirname(__file__), 'mocks/statsquery')
         with open(mock_file) as f:
             raw_content = None
             if sys.version_info[0] == 3 and sys.version_info[1] == 2:
@@ -28,7 +29,7 @@ class SpellQueryTestCase(unittest.TestCase):
         pass
 
     def test_query(self):
-        self.assertNotEqual(self.response.spellcheck, None)
+        self.assertNotEqual(self.response.stats, None)
 
 
 if __name__ == '__main__':

@@ -9,11 +9,11 @@ import sys
 import json
 
 
-class StatsQueryTestCase(unittest.TestCase):
+class SpellQueryResultTestCase(unittest.TestCase):
     """ """
 
     def setUp(self):
-        mock_file = join(dirname(__file__), 'mocks/statsquery')
+        mock_file = join(dirname(__file__), 'mocks/spellquery')
         with open(mock_file) as f:
             raw_content = None
             if sys.version_info[0] == 3 and sys.version_info[1] == 2:
@@ -29,7 +29,7 @@ class StatsQueryTestCase(unittest.TestCase):
         pass
 
     def test_query(self):
-        self.assertNotEqual(self.response.stats, None)
+        self.assertNotEqual(self.response.spellcheck, None)
 
 
 if __name__ == '__main__':

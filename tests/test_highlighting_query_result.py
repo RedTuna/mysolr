@@ -8,7 +8,7 @@ import requests
 import json
 import sys
 
-class HighlightingQueryTestCase(unittest.TestCase):
+class HighlightingQueryResultTestCase(unittest.TestCase):
     """ """
 
     def setUp(self):
