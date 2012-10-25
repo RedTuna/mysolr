@@ -155,9 +155,13 @@ class Solr(object):
         :param expunge_deletes: Merge segments with deletes away (default is False)
 
         """
-        xml = '<commit waitFlush="%s" waitSearcher="%s" expungeDeletes="%s" />' % ('true' if wait_flush else 'false',
-                                                                                   'true' if wait_searcher else 'false',
-                                                                                   'true' if expunge_deletes else 'false')
+        xml = '<commit '
+        if self.version < 4:
+            xml += 'waitFlush="%s" ' % str(wait_flush).lower()
+        xml += 'waitSearcher="%s" ' % str(wait_searcher).lower()
+        xml += 'expungeDeletes="%s" ' % str(expunge_deletes).lower()
+        xml += '/>'
+
         http_response = self._post_xml(xml)
         return SolrResponse(http_response)
 
