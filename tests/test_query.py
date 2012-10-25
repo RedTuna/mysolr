@@ -33,6 +33,10 @@ class QueryResultTestCase(unittest.TestCase):
         response = self.solr.commit()
         self.assertEqual(response.status, 200)
 
+    def test_optimize(self):
+        response = self.solr.optimize()
+        self.assertEqual(response.status, 200)
+
     def tearDown(self):
         pass
 
