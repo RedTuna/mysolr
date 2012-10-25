@@ -99,14 +99,13 @@ class Solr(object):
 
         :param documents: A list of solr-compatible documents to index. You
                           should use unicode strings for text/string fields.
-        :param input_type: The format which documents are sent. Remember that json
-                           is not supported until version 3.
+        :param input_type: The format which documents are sent. Remember that
+                           json is not supported until version 3.
         :param commit: If True, sends a commit message after the operation is
                        executed.
 
         """
-        assert input_type in ['xml', 'json']#,
-              #'The given type isn\'t correct. Valid types are "json" and "xml".')
+        assert input_type in ['xml', 'json']
 
         if input_type == 'xml':
             http_response = self._post_xml(_get_add_xml(documents))
@@ -147,12 +146,13 @@ class Solr(object):
                wait_searcher=True, expunge_deletes=False):
         """Sends a commit message to Solr.
 
-        :param wait_flush: Block until index changes are flushed to disk (default is
-                           True).
-        :param wait_searcher: Block until a new searcher is opened and registered
-                              as the main query searcher, making the changes
-                              visible (default is True).
-        :param expunge_deletes: Merge segments with deletes away (default is False)
+        :param wait_flush: Block until index changes are flushed to disk
+                           (default is True).
+        :param wait_searcher: Block until a new searcher is opened and
+                              registered as the main query searcher, making the
+                              changes visible (default is True).
+        :param expunge_deletes: Merge segments with deletes away (default is 
+                                False)
 
         """
         xml = '<commit '
@@ -168,12 +168,13 @@ class Solr(object):
     def optimize(self, wait_flush=True, wait_searcher=True, max_segments=1):
         """Sends an optimize message to Solr.
 
-        :param wait_flush: Block until index changes are flushed to disk (default
-                           is True)
-        :param wait_searcher: Block until a new searcher is opened and registered as
-                              the main query searcher, making the changes visible
-                              (default is True)
-        :param max_segments: Optimizes down to at most this number of segments (default is 1)
+        :param wait_flush: Block until index changes are flushed to disk
+                           (default is True)
+        :param wait_searcher: Block until a new searcher is opened and
+                              registered as the main query searcher, making the
+                              changes visible (default is True)
+        :param max_segments: Optimizes down to at most this number of segments
+                             (default is 1)
 
         """
         xml = '<optimize '
@@ -235,8 +236,8 @@ class Solr(object):
         Using a previously configured RequestHandler
             You normally specify a query and the first matching document for 
             that query is used to retrieve similar documents.
-            You can however specify a text instead of a query, and similar documents
-            to the text will be returned.
+            You can however specify a text instead of a query, and similar
+            documents to the text will be returned.
             You must configure a MLT RequestHandler in your solrconfig.xml in
             order to get advantage of this functionality.
             Note that this method has a default resource name with value "mlt",
@@ -249,7 +250,8 @@ class Solr(object):
             similar documents for each result document will be given.
 
         :param resource: Request dispatcher. 'ml' by default.
-        :param text: Text to use for similar documents retrieval. None by default.
+        :param text: Text to use for similar documents retrieval. None by
+                     default.
         :param **kwargs: Dictionary containing any of the available Solr query
                          parameters described in
                          http://wiki.apache.org/solr/CommonQueryParameters
@@ -339,7 +341,8 @@ class Cursor(object):
         end = False
         docs_retrieved = 0
         while not end:
-            http_response = requests.get(self.url, params=self.query, auth=self.auth)
+            http_response = requests.get(self.url, params=self.query,
+                                         auth=self.auth)
             solr_response = SolrResponse(http_response)
             yield solr_response
             total_results = solr_response.total_results
