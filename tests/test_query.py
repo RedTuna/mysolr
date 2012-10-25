@@ -29,6 +29,10 @@ class QueryResultTestCase(unittest.TestCase):
             i += 1
         self.assertEqual(i, 1)
 
+    def test_commit(self):
+        response = self.solr.commit()
+        self.assertEqual(response.status, 200)
+
     def tearDown(self):
         pass
 
