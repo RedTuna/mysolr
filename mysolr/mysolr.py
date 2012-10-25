@@ -23,18 +23,27 @@ import requests
 class Solr(object):
     """Acts as an easy-to-use interface to Solr."""
 
-    def __init__(self, base_url='http://localhost:8080/solr/', auth=None):
+    def __init__(self, base_url='http://localhost:8080/solr/', auth=None,
+                 version=None):
         """ Initializes a Solr object. Solr URL is a needed parameter.
 
         :param base_url: Url to solr index
         :param auth: Described in requests documentation:
                      http://docs.python-requests.org/en/latest/user/quickstart/#basic-authentication 
+        :param version: first number of the solr version. i.e. 4 if solr 
+                        version is 4.0.0 If you set to none this parameter
+                        a request to admin/system will be done at init time
+                        in order to guess the version.
         """
         self.base_url = base_url
         # base_url must be end with /
         if self.base_url[-1] != '/':
             self.base_url += '/'
         self.auth = auth
+        self.version = version
+        if not version:
+            self.version = self.get_version()
+        assert(self.version in (1, 3, 4))
 
     def search(self, resource='select', **kwargs):
         """Queries Solr with the given kwargs and returns a SolrResponse
@@ -194,6 +203,18 @@ class Solr(object):
 
     def solrconfig(self):
         return self._get_file('solrconfig.xml')
+
+    def get_system_info(self):
+        """ Gets solr system status. """
+        url = urljoin(self.base_url, 'admin/system')
+        params = {'wt': get_wt()}
+        http_response = requests.get(url, params=params, auth=self.auth)
+        return SolrResponse(http_response)
+
+    def get_version(self):
+        system_info = self.get_system_info()
+        version = system_info.raw_content['lucene']['solr-spec-version']
+        return int(version[0])
 
     def more_like_this(self, resource='mlt', text=None, **kwargs):
         """Implements convenient access to Solr MoreLikeThis functionality  
