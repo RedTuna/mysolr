@@ -7,4 +7,5 @@ python:
 install:
   - pip install . --use-mirrors
 # command to run tests
+before_script: curl https://raw.github.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=3.6.1 bash
 script: python setup.py test
