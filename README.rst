@@ -6,12 +6,12 @@ Fast python solr binding. Check full documentation here_
 Status
 ------
 
-master
+master:
 
 .. image:: https://secure.travis-ci.org/RedTuna/mysolr.png?branch=master
    :target: https://secure.travis-ci.org/RedTuna/mysolr
 
-dev
+dev:
 
 .. image:: https://secure.travis-ci.org/RedTuna/mysolr.png?branch=dev
    :target: https://secure.travis-ci.org/RedTuna/mysolr
