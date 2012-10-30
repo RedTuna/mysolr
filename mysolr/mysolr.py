@@ -14,7 +14,7 @@ operate with a Solr server.
 
 """
 from .response import SolrResponse
-from .compat import urljoin, get_wt, compat_args
+from .compat import urljoin, get_wt, compat_args, get_basestring
 from xml.sax.saxutils import escape
 
 import json
@@ -365,11 +365,11 @@ def _get_add_xml(array_of_hash, overwrite=True):
         for key, value in doc_hash.items():
             if isinstance(value, list):
                 for v in value:
-                    if isinstance(v, basestring):
+                    if isinstance(v, get_basestring()):
                         v = escape(v)
                     doc += '<field name="%s">%s</field>' % (key, v)
             else:
-                if isinstance(value, basestring):
+                if isinstance(value, get_basestring()):
                     value = escape(value)
                 doc += '<field name="%s">%s</field>' % (key, value)
         doc += '</doc>'

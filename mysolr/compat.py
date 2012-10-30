@@ -31,3 +31,7 @@ def compat_args(query):
     for (key, value) in query.items():
         if isinstance(value, bool):
             query[key] = str(value).lower()
+
+
+def get_basestring():
+    return str if sys.version_info[0] == 3  else basestring
