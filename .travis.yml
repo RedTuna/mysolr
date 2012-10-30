@@ -6,6 +6,10 @@ python:
 # command to install dependencies
 install:
   - pip install . --use-mirrors
+env:
+  - SOLR_VERSION=3.6.1
+  - SOLR_VERSION=4.0.0
 # command to run tests
-before_script: curl https://raw.github.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=3.6.1 bash
+before_script: curl https://raw.github.com/moliware/travis-solr/master/travis-solr.sh | bash
 script: python setup.py test
+after_script: killall java
