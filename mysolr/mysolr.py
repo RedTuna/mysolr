@@ -363,7 +363,7 @@ def _get_add_xml(array_of_hash, overwrite=True):
     for doc_hash in array_of_hash:
         doc = '<doc>'
         for key, value in doc_hash.items():
-            if type(value) == type(list()):
+            if isinstance(value, list):
                 for v in value:
                     if isinstance(v, basestring):
                         v = escape(v)
