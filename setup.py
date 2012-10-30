@@ -11,7 +11,7 @@ REQUIRED = []
 
 if sys.version_info >= (3, 3):
     REQUIRED.append('requests>=0.14.1')
-else if sys.version_info >= (3, 2):
+elif sys.version_info >= (3, 2):
     REQUIRED.append('requests==0.12.1')
 else:
     REQUIRED.append('requests>=0.12.1')
