@@ -1,9 +1,16 @@
 Chages
 ======
 
+
+v 0.8
+-----
+- Solr 4 support
+- Python 3 fixes
+- Test improvements
+
 v 0.7.3
 -------
-- Python 3.3 suppord
+- Python 3.3 support
 - Documentation updates
 
 
