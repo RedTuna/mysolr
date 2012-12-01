@@ -1,22 +1,22 @@
 {
-  'responseHeader':{
-    'status':0,
-    'QTime':9,
-    'params':{
-      'hl.snippets':'2',
-      'indent':'on',
-      'start':'0',
-      'q':'de',
-      'hl.fl':'name',
-      'wt':'python',
-      'hl':'true',
-      'rows':'3',
-      'version':'2.2'}},
-  'response':{'numFound':1,'start':0,'docs':[
+  "responseHeader":{
+    "status":0,
+    "QTime":9,
+    "params":{
+      "hl.snippets":"2",
+      "indent":"on",
+      "start":"0",
+      "q":"de",
+      "hl.fl":"name",
+      "wt":"python",
+      "hl":"true",
+      "rows":"3",
+      "version":"2.2"}},
+  "response":{"numFound":1,"start":0,"docs":[
       {
-        'id':'1',
-        'name': 'Mock'}]
+        "id":"1",
+        "name": "Mock"}]
   },
-  'highlighting':{
-    '1':{
-      'name':['Mock']}}}
+  "highlighting":{
+    "1":{
+      "name":["Mock"]}}}
