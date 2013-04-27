@@ -2,13 +2,13 @@ language: python
 python:
   - "2.6"
   - "2.7"
-  - "3.2"
+  - "3.3"
 # command to install dependencies
 install:
   - pip install . --use-mirrors
 env:
-  - SOLR_VERSION=3.6.1
-  - SOLR_VERSION=4.0.0
+  - SOLR_VERSION=3.6.1 SOLR_URL=http://localhost:8983/solr
+  - SOLR_VERSION=4.2.1 SOLR_URL=http://localhost:8983/solr/collection1
 # command to run tests
 before_script: curl https://raw.github.com/moliware/travis-solr/master/travis-solr.sh | bash
 script: python setup.py test
