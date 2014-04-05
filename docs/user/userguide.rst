@@ -31,6 +31,19 @@ using auth parameter.
 
 Further information about auth parameter in requests docs_
 
+.. versionadded:: 0.8
+
+Solr 4.0 changed a bit the api so, Solr object will guess the solr server
+version by making a requests. You can manuall set the solr version by using
+the paremeter *version*
+
+::
+
+    from mysolr import Solr
+
+    # Default connection. Connecting to a solr 4.X server
+    solr = Solr(version=4)
+
 
 Queriying to Solr
 -----------------

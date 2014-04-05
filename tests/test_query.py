@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import time
 import unittest
 from mysolr import Solr
@@ -7,7 +8,7 @@ from mysolr import Solr
 class QueryResultTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.solr = Solr('http://localhost:8983/solr')
+        self.solr = Solr(os.getenv('SOLR_URL'))
 
     def test_search(self):
         response = self.solr.search(q='*:*')

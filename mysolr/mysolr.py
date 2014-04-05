@@ -58,8 +58,8 @@ class Solr(object):
         """
         query = build_request(kwargs)
         
-        http_response = requests.get(urljoin(self.base_url, resource),
-                                     params=query, auth=self.auth)
+        http_response = requests.post(urljoin(self.base_url, resource),
+                                      data=query, auth=self.auth)
 
         solr_response = SolrResponse(http_response)
         return solr_response
@@ -88,7 +88,7 @@ class Solr(object):
 
         url = urljoin(self.base_url, resource)
         queries = map(build_request, queries)
-        rs = (grequests.get(url, params=query) for query in queries)
+        rs = (grequests.post(url, data=query) for query in queries)
         responses = grequests.map(rs, size=size)
         return [SolrResponse(http_response) for http_response in responses]
 
@@ -341,8 +341,8 @@ class Cursor(object):
         end = False
         docs_retrieved = 0
         while not end:
-            http_response = requests.get(self.url, params=self.query,
-                                         auth=self.auth)
+            http_response = requests.post(self.url, data=self.query,
+                                          auth=self.auth)
             solr_response = SolrResponse(http_response)
             yield solr_response
             total_results = solr_response.total_results
