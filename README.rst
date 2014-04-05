@@ -1,20 +1,21 @@
+.. image:: https://secure.travis-ci.org/RedTuna/mysolr.png?branch=master
+   :target: https://secure.travis-ci.org/RedTuna/mysolr
+   
+.. image:: https://coveralls.io/repos/RedTuna/mysolr/badge.png
+   :target: https://coveralls.io/r/RedTuna/mysolr
+   
+.. image:: https://pypip.in/d/mysolr/badge.png
+   :target: https://pypi.python.org/pypi/mysolr/
+
+.. image:: https://pypip.in/license/mysolr/badge.png
+   :target: https://pypi.python.org/pypi/mysolr/
+
+
 mysolr
 ======
 
 Fast python solr binding. Check full documentation here_
 
-Status
-------
-
-master:
-
-.. image:: https://secure.travis-ci.org/RedTuna/mysolr.png?branch=master
-   :target: https://secure.travis-ci.org/RedTuna/mysolr
-
-dev:
-
-.. image:: https://secure.travis-ci.org/RedTuna/mysolr.png?branch=dev
-   :target: https://secure.travis-ci.org/RedTuna/mysolr
 
 Features
 --------
