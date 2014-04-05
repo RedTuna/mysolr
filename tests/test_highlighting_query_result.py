@@ -15,8 +15,8 @@ class HighlightingQueryResultTestCase(unittest.TestCase):
         mock_file = join(dirname(__file__), 'mocks/highlightingquery')
         with open(mock_file) as f:
             raw_content = None
-            if sys.version_info[0] == 3 and sys.version_info[1] == 2:
-                raw_content = json.dumps(eval(f.read())).encode('utf-8')
+            if sys.version_info[0] == 3:
+                raw_content = f.read().encode('utf-8')
             else:
                 raw_content = f.read()
             self.response = SolrResponse()
