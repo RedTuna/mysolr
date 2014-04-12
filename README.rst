@@ -1,8 +1,8 @@
 .. image:: https://secure.travis-ci.org/RedTuna/mysolr.png?branch=master
    :target: https://secure.travis-ci.org/RedTuna/mysolr
    
-.. image:: https://coveralls.io/repos/RedTuna/mysolr/badge.png
-   :target: https://coveralls.io/r/RedTuna/mysolr
+.. image:: https://coveralls.io/repos/RedTuna/mysolr/badge.png?branch=dev
+   :target: https://coveralls.io/r/RedTuna/mysolr?branch=dev
    
 .. image:: https://pypip.in/d/mysolr/badge.png
    :target: https://pypi.python.org/pypi/mysolr/
