@@ -10,7 +10,7 @@ env:
   - SOLR_VERSION=3.6.1 SOLR_URL=http://localhost:8983/solr SOLR_DOCS=apache-solr-3.6.1/example/exampledocs/books.json
   - SOLR_VERSION=4.2.1 SOLR_URL=http://localhost:8983/solr/collection1 SOLR_DOCS=solr-4.2.1/example/exampledocs/books.json
 # command to run tests
-before_script: curl https://raw.github.com/moliware/travis-solr/master/travis-solr.sh | bash
+before_script: curl https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | bash
 script: coverage run --source=mysolr setup.py test
 after_script: killall java
 after_success: coveralls
