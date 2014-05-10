@@ -23,13 +23,14 @@ import requests
 class Solr(object):
     """Acts as an easy-to-use interface to Solr."""
 
-    def __init__(self, base_url='http://localhost:8080/solr/', auth=None,
-                 version=None):
+    def __init__(self, base_url='http://localhost:8080/solr/',
+                 make_request=requests, use_get=False, version=None):
         """ Initializes a Solr object. Solr URL is a needed parameter.
 
         :param base_url: Url to solr index
-        :param auth: Described in requests documentation:
-                     http://docs.python-requests.org/en/latest/user/quickstart/#basic-authentication 
+        :param make_request: 
+        :param use_get: Use get instead of post when searching. Useful if you
+                        cache GET requests
         :param version: first number of the solr version. i.e. 4 if solr 
                         version is 4.0.0 If you set to none this parameter
                         a request to admin/system will be done at init time
@@ -39,7 +40,8 @@ class Solr(object):
         # base_url must be end with /
         if self.base_url[-1] != '/':
             self.base_url += '/'
-        self.auth = auth
+        self.make_request = make_request
+        self.use_get = use_get
         self.version = version
         if not version:
             self.version = self.get_version()
@@ -57,10 +59,14 @@ class Solr(object):
 
         """
         query = build_request(kwargs)
-        
-        http_response = requests.post(urljoin(self.base_url, resource),
-                                      data=query, auth=self.auth,
-                                      headers={'Connection': 'close'})
+        url = urljoin(self.base_url, resource)
+        headers = {'Connection': 'close'}
+        if self.use_get:
+            http_response = self.make_request.get(url, params=query,
+                                                  headers=headers)
+        else:
+            http_response = self.make_request.post(url, data=query,
+                                                   headers=headers)
 
         solr_response = SolrResponse(http_response)
         return solr_response
@@ -68,7 +74,8 @@ class Solr(object):
     def search_cursor(self, resource='select', **kwargs):
         """ """
         query = build_request(kwargs)
-        cursor = Cursor(urljoin(self.base_url, resource), query, self.auth)
+        cursor = Cursor(urljoin(self.base_url, resource), query,
+                        self.make_request, self.use_get)
 
         return cursor
     
@@ -197,8 +204,8 @@ class Solr(object):
     def ping(self):
         """ Ping call to solr server. """
         url = urljoin(self.base_url, 'admin/ping')
-        http_response = requests.get(url, params={'wt': 'json'}, auth=self.auth,
-                                     headers={'Connection': 'close'})
+        http_response = self.make_request.get(url, params={'wt': 'json'},
+                                              headers={'Connection': 'close'})
         return SolrResponse(http_response)
 
     def is_up(self):
@@ -219,8 +226,8 @@ class Solr(object):
         """ Gets solr system status. """
         url = urljoin(self.base_url, 'admin/system')
         params = {'wt': get_wt()}
-        http_response = requests.get(url, params=params, auth=self.auth,
-                                     headers={'Connection': 'close'})
+        http_response = self.make_request.get(url, params=params,
+                                              headers={'Connection': 'close'})
         return SolrResponse(http_response)
 
     def get_version(self):
@@ -268,11 +275,10 @@ class Solr(object):
             #we dont call build_query because 'q' is NOT mandatory in this case
             kwargs['wt'] = get_wt()
             headers = {'Content-type': 'text/json'}
-            http_response = requests.post(urljoin(self.base_url, resource), 
-                                          params=kwargs,
-                                          data=text,
-                                          headers=headers,
-                                          auth=self.auth)
+            url = urljoin(self.base_url, resource)
+            http_response = self.make_request.post(url, params=kwargs,
+                                                   data=text,
+                                                   headers=headers)
             solr_response = SolrResponse(http_response)
             return solr_response
         else:
@@ -290,8 +296,8 @@ class Solr(object):
             'Content-Length': "%s" % len(xml_data),
             'Connection': 'close'
         }
-        http_response = requests.post(url, data=xml_data,
-                                      headers=headers, auth=self.auth)
+        http_response = self.make_request.post(url, data=xml_data,
+                                               headers=headers)
         return http_response
 
     def _post_json(self, json_doc):
@@ -306,8 +312,8 @@ class Solr(object):
             'Content-Length': "%s" % len(json_data),
             'Connection': 'close'
         }
-        http_response = requests.post(url, data=json_data,
-                                      headers=headers, auth=self.auth)
+        http_response = self.make_request.post(url, data=json_data,
+                                               headers=headers)
         return http_response
 
     def _get_file(self, filename):
@@ -317,18 +323,19 @@ class Solr(object):
             'contentType': 'text/xml;charset=utf-8',
             'file' : filename
         }
-        http_response = requests.get(url, params=params, auth=self.auth,
-                                     headers={'Connection': 'close'})
+        http_response = self.make_request.get(url, params=params,
+                                              headers={'Connection': 'close'})
         return http_response.content
 
 
 class Cursor(object):
     """ Implements the concept of cursor in relational databases """
-    def __init__(self, url, query, auth=None):
+    def __init__(self, url, query, make_request=requests, use_get=False):
         """ Cursor initialization """
         self.url = url
         self.query = query
-        self.auth = auth
+        self.make_request = make_request
+        self.use_get = use_get
 
     def fetch(self, rows=None):
         """ Generator method that grabs all the documents in bulk sets of 
@@ -346,10 +353,16 @@ class Cursor(object):
 
         end = False
         docs_retrieved = 0
+        headers = {'Connection': 'close'}
         while not end:
-            http_response = requests.post(self.url, data=self.query,
-                                          auth=self.auth,
-                                          headers={'Connection': 'close'})
+            if self.use_get:
+                http_response = self.make_request.get(self.url,
+                                                      params=self.query,
+                                                      headers=headers)
+            else:
+                http_response = self.make_request.post(self.url,
+                                                       data=self.query,
+                                                       headers=headers)
             solr_response = SolrResponse(http_response)
             yield solr_response
             total_results = solr_response.total_results
