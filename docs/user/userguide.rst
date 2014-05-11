@@ -19,6 +19,8 @@ Use mysolr.Solr object to connect to a Solr instance.
     # Custom connection
     solr = Solr('http://foo.bar:9090/solr/')
 
+.. versionadded:: 0.9
+
 You can reuse HTTP connection by using requests.Session object
 
 ::
@@ -28,6 +30,8 @@ You can reuse HTTP connection by using requests.Session object
 
     session = requests.Session()
     solr = Solr('http://localhost:8983/solr/collection1', make_request=session)
+
+.. versionadded:: 0.9
 
 Using a requests.Session object allows you to connect to servers secured with
 HTTP basic authentication as follows:
@@ -45,7 +49,7 @@ HTTP basic authentication as follows:
 .. versionadded:: 0.8
 
 Solr 4.0 changed a bit the api so, Solr object will guess the solr server
-version by making a requests. You can manually set the solr version by using
+version by making a request. You can manually set the solr version with
 the paremeter *version*
 
 ::
