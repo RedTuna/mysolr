@@ -60,7 +60,8 @@ class Solr(object):
         """
         query = build_request(kwargs)
         url = urljoin(self.base_url, resource)
-        headers = {'Connection': 'close'}
+        headers = {}
+        #headers = {'Connection': 'close'}
         if self.use_get:
             http_response = self.make_request.get(url, params=query,
                                                   headers=headers)
