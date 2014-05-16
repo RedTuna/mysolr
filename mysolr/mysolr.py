@@ -14,7 +14,7 @@ operate with a Solr server.
 
 """
 from .response import SolrResponse
-from .compat import urljoin, get_wt, compat_args, get_basestring
+from .compat import urljoin, compat_args, get_basestring
 from xml.sax.saxutils import escape
 
 import json
@@ -225,7 +225,7 @@ class Solr(object):
     def get_system_info(self):
         """ Gets solr system status. """
         url = urljoin(self.base_url, 'admin/system')
-        params = {'wt': get_wt()}
+        params = {'wt': 'json'}
         http_response = self.make_request.get(url, params=params,
                                               headers={'Connection': 'close'})
         return SolrResponse(http_response)
@@ -273,7 +273,7 @@ class Solr(object):
         """
         if text is not None: #RequestHandler with Content-Streamed Text
             #we dont call build_query because 'q' is NOT mandatory in this case
-            kwargs['wt'] = get_wt()
+            kwargs['wt'] = 'json'
             headers = {'Content-type': 'text/json'}
             url = urljoin(self.base_url, resource)
             http_response = self.make_request.post(url, params=kwargs,
@@ -402,5 +402,5 @@ def  build_request(query):
     """ Check solr query and put convenient format """
     assert 'q' in query
     compat_args(query)
-    query['wt'] = get_wt()
+    query['wt'] = 'json'
     return query

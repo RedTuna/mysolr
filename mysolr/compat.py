@@ -15,9 +15,6 @@ if sys.version_info >= (3, ):
 elif sys.version_info >= (2, ):
     from urlparse import urljoin
 
-def get_wt():
-    return 'json'
-
 def parse_response(content):
     return anyjson.loads(content.decode('utf-8'))
 
