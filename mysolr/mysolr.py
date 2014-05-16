@@ -36,10 +36,7 @@ class Solr(object):
                         a request to admin/system will be done at init time
                         in order to guess the version.
         """
-        self.base_url = base_url
-        # base_url must be end with /
-        if self.base_url[-1] != '/':
-            self.base_url += '/'
+        self.base_url = base_url if base_url.endswith('/') else '%s/' % base_url
         self.make_request = make_request
         self.use_get = use_get
         self.version = version
