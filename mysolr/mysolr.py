@@ -57,14 +57,10 @@ class Solr(object):
         """
         query = build_request(kwargs)
         url = urljoin(self.base_url, resource)
-        headers = {}
-        #headers = {'Connection': 'close'}
         if self.use_get:
-            http_response = self.make_request.get(url, params=query,
-                                                  headers=headers)
+            http_response = self.make_request.get(url, params=query)
         else:
-            http_response = self.make_request.post(url, data=query,
-                                                   headers=headers)
+            http_response = self.make_request.post(url, data=query)
 
         solr_response = SolrResponse(http_response)
         return solr_response
@@ -202,8 +198,7 @@ class Solr(object):
     def ping(self):
         """ Ping call to solr server. """
         url = urljoin(self.base_url, 'admin/ping')
-        http_response = self.make_request.get(url, params={'wt': 'json'},
-                                              headers={'Connection': 'close'})
+        http_response = self.make_request.get(url, params={'wt': 'json'})
         return SolrResponse(http_response)
 
     def is_up(self):
@@ -224,8 +219,7 @@ class Solr(object):
         """ Gets solr system status. """
         url = urljoin(self.base_url, 'admin/system')
         params = {'wt': 'json'}
-        http_response = self.make_request.get(url, params=params,
-                                              headers={'Connection': 'close'})
+        http_response = self.make_request.get(url, params=params)
         return SolrResponse(http_response)
 
     def get_version(self):
@@ -291,8 +285,7 @@ class Solr(object):
         xml_data = xml.encode('utf-8')
         headers = {
             'Content-type': 'text/xml; charset=utf-8',
-            'Content-Length': "%s" % len(xml_data),
-            'Connection': 'close'
+            'Content-Length': "%s" % len(xml_data)
         }
         http_response = self.make_request.post(url, data=xml_data,
                                                headers=headers)
@@ -307,8 +300,7 @@ class Solr(object):
         json_data = json_doc.encode('utf-8')
         headers = {
             'Content-type': 'application/json; charset=utf-8',
-            'Content-Length': "%s" % len(json_data),
-            'Connection': 'close'
+            'Content-Length': "%s" % len(json_data)
         }
         http_response = self.make_request.post(url, data=json_data,
                                                headers=headers)
@@ -321,8 +313,7 @@ class Solr(object):
             'contentType': 'text/xml;charset=utf-8',
             'file' : filename
         }
-        http_response = self.make_request.get(url, params=params,
-                                              headers={'Connection': 'close'})
+        http_response = self.make_request.get(url, params=params)
         return http_response.content
 
 
@@ -351,16 +342,13 @@ class Cursor(object):
 
         end = False
         docs_retrieved = 0
-        headers = {'Connection': 'close'}
         while not end:
             if self.use_get:
                 http_response = self.make_request.get(self.url,
-                                                      params=self.query,
-                                                      headers=headers)
+                                                      params=self.query)
             else:
                 http_response = self.make_request.post(self.url,
-                                                       data=self.query,
-                                                       headers=headers)
+                                                       data=self.query)
             solr_response = SolrResponse(http_response)
             yield solr_response
             total_results = solr_response.total_results
