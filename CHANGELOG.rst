@@ -2,6 +2,16 @@ Chages
 ======
 
 
+v 0.8.2
+-------
+- Updates travis config
+- Persistent connections by using requests.Session object
+
+v 0.8.1
+-------
+- coveralls integration
+- Use anyjson for searialization
+
 v 0.8
 -----
 - Solr 4 support
