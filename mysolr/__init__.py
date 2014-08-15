@@ -3,6 +3,7 @@
 from .response import SolrResponse
 from .mysolr import Solr
 from .mysolr import Cursor
+from .utils import *
 
 __title__ = 'mysolr'
 __version__ = '0.8.2'
