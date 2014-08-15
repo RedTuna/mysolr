@@ -8,7 +8,7 @@ python:
 install:
   - pip install . --use-mirrors
 env:
-  - SOLR_VERSION=3.6.2 SOLR_URL=http://localhost:8983/solr SOLR_DOCS=apache-solr-3.6.1/example/exampledocs/books.json
+  - SOLR_VERSION=3.6.2 SOLR_URL=http://localhost:8983/solr SOLR_DOCS=apache-solr-3.6.2/example/exampledocs/books.json
   - SOLR_VERSION=4.8.0 SOLR_URL=http://localhost:8983/solr/collection1 SOLR_DOCS=solr-4.8.0/example/exampledocs/books.json
 # command to run tests
 before_script: curl https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | bash
