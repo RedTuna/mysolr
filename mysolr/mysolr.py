@@ -24,7 +24,8 @@ class Solr(object):
     """Acts as an easy-to-use interface to Solr."""
 
     def __init__(self, base_url='http://localhost:8080/solr/',
-                 make_request=requests, use_get=False, version=None):
+                 make_request=requests, use_get=False, version=None,
+                 timeout=None):
         """ Initializes a Solr object. Solr URL is a needed parameter.
 
         :param base_url: Url to solr index
@@ -35,6 +36,7 @@ class Solr(object):
                         version is 4.0.0 If you set to none this parameter
                         a request to admin/system will be done at init time
                         in order to guess the version.
+        :param timeout: request timeout for all requests made to solr
         """
         self.base_url = base_url if base_url.endswith('/') else '%s/' % base_url
         self.make_request = make_request
@@ -43,6 +45,7 @@ class Solr(object):
         if not version:
             self.version = self.get_version()
         assert(self.version in (1, 3, 4))
+        self.timeout = timeout
 
     def search(self, resource='select', **kwargs):
         """Queries Solr with the given kwargs and returns a SolrResponse
@@ -58,9 +61,11 @@ class Solr(object):
         query = build_request(kwargs)
         url = urljoin(self.base_url, resource)
         if self.use_get:
-            http_response = self.make_request.get(url, params=query)
+            http_response = self.make_request.get(url, params=query,
+                                                  timeout=self.timeout)
         else:
-            http_response = self.make_request.post(url, data=query)
+            http_response = self.make_request.post(url, data=query,
+                                                   timeout=self.timeout)
 
         solr_response = SolrResponse(http_response)
         return solr_response
@@ -69,7 +74,7 @@ class Solr(object):
         """ """
         query = build_request(kwargs)
         cursor = Cursor(urljoin(self.base_url, resource), query,
-                        self.make_request, self.use_get)
+                        self.make_request, self.use_get, timeout=self.timeout)
 
         return cursor
     
@@ -198,7 +203,8 @@ class Solr(object):
     def ping(self):
         """ Ping call to solr server. """
         url = urljoin(self.base_url, 'admin/ping')
-        http_response = self.make_request.get(url, params={'wt': 'json'})
+        http_response = self.make_request.get(url, params={'wt': 'json'},
+                                              timeout=self.timeout)
         return SolrResponse(http_response)
 
     def is_up(self):
@@ -219,7 +225,8 @@ class Solr(object):
         """ Gets solr system status. """
         url = urljoin(self.base_url, 'admin/system')
         params = {'wt': 'json'}
-        http_response = self.make_request.get(url, params=params)
+        http_response = self.make_request.get(url, params=params,
+                                              timeout=self.timeout)
         return SolrResponse(http_response)
 
     def get_version(self):
@@ -270,7 +277,8 @@ class Solr(object):
             url = urljoin(self.base_url, resource)
             http_response = self.make_request.post(url, params=kwargs,
                                                    data=text,
-                                                   headers=headers)
+                                                   headers=headers,
+                                                   timeout=self.timeout)
             solr_response = SolrResponse(http_response)
             return solr_response
         else:
@@ -288,7 +296,8 @@ class Solr(object):
             'Content-Length': "%s" % len(xml_data)
         }
         http_response = self.make_request.post(url, data=xml_data,
-                                               headers=headers)
+                                               headers=headers,
+                                               timeout=self.timeout)
         return http_response
 
     def _post_json(self, json_doc):
@@ -313,18 +322,19 @@ class Solr(object):
             'contentType': 'text/xml;charset=utf-8',
             'file' : filename
         }
-        http_response = self.make_request.get(url, params=params)
+        http_response = self.make_request.get(url, params=params, timeout=self.timeout)
         return http_response.content
 
 
 class Cursor(object):
     """ Implements the concept of cursor in relational databases """
-    def __init__(self, url, query, make_request=requests, use_get=False):
+    def __init__(self, url, query, make_request=requests, use_get=False, timeout=None):
         """ Cursor initialization """
         self.url = url
         self.query = query
         self.make_request = make_request
         self.use_get = use_get
+        self.timeout = timeout
 
     def fetch(self, rows=None):
         """ Generator method that grabs all the documents in bulk sets of 
@@ -345,10 +355,12 @@ class Cursor(object):
         while not end:
             if self.use_get:
                 http_response = self.make_request.get(self.url,
-                                                      params=self.query)
+                                                      params=self.query,
+                                                      timeout=self.timeout)
             else:
                 http_response = self.make_request.post(self.url,
-                                                       data=self.query)
+                                                       data=self.query,
+                                                       timeout=self.timeout)
             solr_response = SolrResponse(http_response)
             yield solr_response
             total_results = solr_response.total_results
