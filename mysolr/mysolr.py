@@ -42,10 +42,10 @@ class Solr(object):
         self.make_request = make_request
         self.use_get = use_get
         self.version = version
+        self.timeout = timeout
         if not version:
             self.version = self.get_version()
         assert(self.version in (1, 3, 4))
-        self.timeout = timeout
 
     def search(self, resource='select', **kwargs):
         """Queries Solr with the given kwargs and returns a SolrResponse
