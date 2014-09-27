@@ -312,7 +312,8 @@ class Solr(object):
             'Content-Length': "%s" % len(json_data)
         }
         http_response = self.make_request.post(url, data=json_data,
-                                               headers=headers)
+                                               headers=headers,
+                                               timeout=self.timeout)
         return http_response
 
     def _get_file(self, filename):
