@@ -7,14 +7,7 @@ except ImportError:
     from distutils.core import setup
 
 
-REQUIRED = ['anyjson', 'coveralls']
-
-if sys.version_info >= (3, 3):
-    REQUIRED.append('requests>=0.14.1')
-elif sys.version_info >= (3, 2):
-    REQUIRED.append('requests==0.12.1')
-else:
-    REQUIRED.append('requests>=0.12.1')
+REQUIRED = ['anyjson', 'coveralls', 'requests>=2.2.1']
 
 if sys.version_info < (2, 7, ):
     REQUIRED.append('ordereddict')
@@ -36,7 +29,7 @@ CLASSIFIERS = [
 
 
 setup(name='mysolr',
-      version='0.8.2',
+      version='0.8.3',
       description='Solr Python binding',
       long_description = open('README.rst').read(),
       author='Rubén Abad, Miguel Olivares',

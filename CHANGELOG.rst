@@ -1,6 +1,10 @@
 Chages
 ======
 
+v 0.8.3
+-------
+- New utils module
+- New timeout parameter
 
 v 0.8.2
 -------
